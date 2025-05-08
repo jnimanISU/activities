@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learning Objectives Builder</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 2rem;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .map-criteria {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: space-between;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .map-criteria div {
+      flex: 1;
+      padding: 1rem;
+      border: 2px solid #990000;
+      border-radius: 6px;
+      background-color: #fff9db;
+      color: #000;
+    }
+    .map-criteria div strong {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #660000;
+    }
+    .taxonomy {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .taxonomy-card {
+      padding: 1rem;
+      border-radius: 6px;
+      color: #fff;
+    }
+    .taxonomy-card h3 {
+      margin-top: 0;
+    }
+    $1color: #000;
+    }
+    .taxonomy-card .verbs button {
+      margin: 0.2rem;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.9rem;
+      border: none;
+      border-radius: 4px;
+      background-color: #222;
+      color: #fff;
+      cursor: pointer;
+    }
+    .remember { background-color: #f8d7da; color: #721c24; }
+    .understand { background-color: #fce5cd; color: #7c4a00; }
+    .apply { background-color: #fff3cd; color: #856404; }
+    .analyze { background-color: #d4edda; color: #155724; }
+    .evaluate { background-color: #d1ecf1; color: #0c5460; }
+    .create { background-color: #e2d6f3; color: #4a235a; }
+
+    .builder label {
+      font-weight: bold;
+      margin-top: 1rem;
+      display: block;
+    }
+    .builder input,
+    .builder select {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.25rem;
+      font-size: 1rem;
+    }
+    .builder button {
+      margin-top: 1.5rem;
+      padding: 0.75rem 1.5rem;
+      background-color: #0044cc;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .output {
+      margin-top: 2rem;
+      padding: 1rem;
+      background-color: #e8f0fe;
+      border: 1px solid #c3dafe;
+      border-radius: 6px;
+    }
+    .feedback {
+      background-color: #fff9db;
+      border-left: 4px solid #990000;
+      padding: 1rem;
+      color: #000;
+      text-align: left;
+      margin-top: 1rem;
+    }
+    .feedback h3 {
+      color: #660000;
+      font-weight: bold;
+      margin-top: 0;
+    }
+    .feedback p strong {
+      color: #660000;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>Learning Objectives Builder</h1>
+    <p style="text-align: center;">Master MAP criteria and Bloom's Taxonomy</p>
+
+    <section class="map-criteria">
+      <div><strong>Measurable</strong>Can be observed and assessed with clear criteria for success</div>
+      <div><strong>Appropriate</strong>Aligned with course level, learner needs, and available resources</div>
+      <div><strong>Precise</strong>Clear and specific about what learners will be able to do</div>
+    </section>
+
+    <section class="taxonomy" id="taxonomy"></section>
+
+    <section class="builder" aria-labelledby="builder-heading">
+      <h2 id="builder-heading">Build Your Learning Objective</h2>
+      <label for="subjectArea">1. Subject Area</label>
+      <input id="subjectArea" placeholder="e.g., Chemistry, Design, or Student Success" />
+
+      <label for="levelSelect">2. Cognitive Level</label>
+      <select id="levelSelect" onchange="populateVerbSelect()">
+        <option value="">-- Select a level --</option>
+      </select>
+
+      <label for="verbSelect">3. Action Verb</label>
+      <select id="verbSelect">
+        <option value="">-- Select a verb --</option>
+      </select>
+
+      <label for="skill">4. Skill or Knowledge</label>
+      <input id="skill" placeholder="e.g., solve equations, analyze trends" />
+
+      <label for="context">5. Context or Conditions (optional)</label>
+      <input id="context" placeholder="e.g., with a formula sheet, using peer feedback" />
+
+      <label for="success">6. Criteria for Success (optional)</label>
+      <input id="success" placeholder="e.g., with 90% accuracy, in under 15 minutes" />
+
+      <button onclick="generateObjective()">Generate Learning Objective</button>
+    </section>
+
+    <section class="output" id="output" aria-live="polite"></section>
+
+    <script>
+      const taxonomyData = {
+        Remember: ['Define', 'List', 'Recall', 'Identify', 'Cite', 'Recognize'],
+        Understand: ['Explain', 'Describe', 'Summarize', 'Interpret', 'Classify', 'Articulate'],
+        Apply: ['Implement', 'Use', 'Demonstrate', 'Solve', 'Calculate', 'Model'],
+        Analyze: ['Compare', 'Differentiate', 'Examine', 'Categorize', 'Deconstruct', 'Investigate'],
+        Evaluate: ['Assess', 'Critique', 'Judge', 'Justify', 'Appraise', 'Validate'],
+        Create: ['Design', 'Develop', 'Formulate', 'Compose', 'Synthesize', 'Construct']
+      };
+
+      const taxonomyDescriptions = {
+        Remember: 'Recall facts and basic concepts',
+        Understand: 'Explain ideas or concepts',
+        Apply: 'Use information in new situations',
+        Analyze: 'Draw connections among ideas',
+        Evaluate: 'Justify a decision or course of action',
+        Create: 'Produce original work or ideas'
+      };
+
+      const taxonomySection = document.getElementById('taxonomy');
+      const levelSelect = document.getElementById('levelSelect');
+      const verbSelect = document.getElementById('verbSelect');
+
+      let index = 1;
+      for (const level in taxonomyData) {
+        const card = document.createElement('div');
+        card.className = `taxonomy-card ${level.toLowerCase()}`;
+        card.innerHTML = `<h3>${index}. ${level}</h3><p>${taxonomyDescriptions[level]}</p><div class="verbs"></div>`;
+        index++;
+
+        taxonomyData[level].forEach(verb => {
+          const btn = document.createElement('button');
+          btn.textContent = verb;
+          btn.onclick = () => {
+            levelSelect.value = level;
+            populateVerbSelect();
+            verbSelect.value = verb;
+          };
+          card.querySelector('.verbs').appendChild(btn);
+        });
+
+        taxonomySection.appendChild(card);
+
+        const opt = document.createElement('option');
+        opt.value = level;
+        opt.textContent = level;
+        levelSelect.appendChild(opt);
+      }
+
+      function populateVerbSelect() {
+        const selectedLevel = levelSelect.value;
+        verbSelect.innerHTML = '<option value="">-- Select a verb --</option>';
+        if (taxonomyData[selectedLevel]) {
+          taxonomyData[selectedLevel].forEach(verb => {
+            const opt = document.createElement('option');
+            opt.value = verb;
+            opt.textContent = verb;
+            verbSelect.appendChild(opt);
+          });
+        }
+      }
+
+      function generateObjective() {
+        const subject = document.getElementById('subjectArea').value;
+        const level = levelSelect.value;
+        const verb = verbSelect.value;
+        const skill = document.getElementById('skill').value;
+        const context = document.getElementById('context').value;
+        const success = document.getElementById('success').value;
+
+        if (!subject || !level || !verb || !skill) {
+          alert('Please fill out steps 1–4.');
+          return;
+        }
+
+        let sentence = `Learners will ${verb.toLowerCase()} ${skill}`;
+        if (context) sentence += ` ${context}`;
+        if (success) sentence += ` ${success}`;
+        sentence += '.';
+
+        const measurable = `<strong>Measurable:</strong> ${verb ? `The verb \"${verb}\" is observable and assessable.` : 'Consider selecting a measurable action verb.'}`;
+        const appropriate = `<strong>Appropriate:</strong> ${level && skill ? `The level \"${level}\" aligns with the task \"${skill}\".` : 'Select both a level and a skill to ensure alignment.'}`;
+
+        let precise = '<strong>Precise:</strong> ';
+        if (!context && !success) {
+          precise += 'Consider adding context or success criteria to clarify expectations.';
+        } else {
+          precise += 'It clearly states what learners will do';
+          if (context) precise += ' with context';
+          if (success) precise += ' and success criteria';
+          precise += '.';
+        }
+
+        const feedback = `
+          <div class="feedback">
+            <h3>MAP Analysis:</h3>
+            <p>${measurable}</p>
+            <p>${appropriate}</p>
+            <p>${precise}</p>
+          </div>
+        `;
+
+        const outputHTML = `
+          <h3 style="margin-top:0;">Learning Objective:</h3>
+          <p style="font-size:1.1rem; font-weight:bold;">${sentence}</p>
+          ${feedback}
+        `;
+
+        document.getElementById('output').innerHTML = outputHTML;
+      }
+    </script>
+  </main>
+</body>
+</html>
