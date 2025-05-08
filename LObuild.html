@@ -7,21 +7,13 @@
   <style>
     body {
       font-family: sans-serif;
-      background-color: #f0f2f5;
+      background-color: #ffffff;
       margin: 0;
       padding: 2rem;
     }
     h1, h2 {
       text-align: center;
       color: #2c3e50;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      background: #fff;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     .map-criteria {
       display: flex;
@@ -46,7 +38,7 @@
     }
     .taxonomy {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
       margin-bottom: 2rem;
     }
@@ -128,8 +120,8 @@
   </style>
 </head>
 <body>
-  <main class="container">
-    <h1>Learning Objectives Builder</h1>
+  <main>
+    <h3>Learning Objectives Builder</h3>
     <p style="text-align: center;">Master MAP criteria and Bloom's Taxonomy</p>
 
     <section class="map-criteria">
@@ -141,7 +133,7 @@
     <section class="taxonomy" id="taxonomy"></section>
 
     <section class="builder" aria-labelledby="builder-heading">
-      <h2 id="builder-heading">Build Your Learning Objective</h2>
+      <h4 id="builder-heading">Build Your Learning Objective</h4>
       <label for="subjectArea">1. Subject Area</label>
       <input id="subjectArea" placeholder="e.g., Chemistry, Design, or Student Success" />
 
@@ -158,7 +150,7 @@
       <label for="skill">4. Skill or Knowledge</label>
       <input id="skill" placeholder="e.g., solve equations, analyze trends" />
 
-      <label for="context">5. Context or Conditions (optional)</label>
+      <label for="context">5. Context or Conditions</label>
       <input id="context" placeholder="e.g., with a formula sheet, using peer feedback" />
 
       <label for="success">6. Criteria for Success (optional)</label>
@@ -171,13 +163,13 @@
 
     <script>
       const taxonomyData = {
-        Remember: ['Define', 'List', 'Recall', 'Identify', 'Cite', 'Recognize'],
-        Understand: ['Explain', 'Describe', 'Summarize', 'Interpret', 'Classify', 'Articulate'],
-        Apply: ['Implement', 'Use', 'Demonstrate', 'Solve', 'Calculate', 'Model'],
-        Analyze: ['Compare', 'Differentiate', 'Examine', 'Categorize', 'Deconstruct', 'Investigate'],
-        Evaluate: ['Assess', 'Critique', 'Judge', 'Justify', 'Appraise', 'Validate'],
-        Create: ['Design', 'Develop', 'Formulate', 'Compose', 'Synthesize', 'Construct']
-      };
+  Remember: ['Define', 'List', 'Recall', 'Identify', 'Cite', 'Recognize', 'Match', 'Name', 'Repeat', 'Label'],
+  Understand: ['Explain', 'Describe', 'Summarize', 'Interpret', 'Classify', 'Articulate', 'Paraphrase', 'Illustrate', 'Compare', 'Discuss'],
+  Apply: ['Implement', 'Use', 'Demonstrate', 'Solve', 'Calculate', 'Model', 'Execute', 'Practice', 'Apply', 'Operate'],
+  Analyze: ['Compare', 'Differentiate', 'Examine', 'Categorize', 'Deconstruct', 'Investigate', 'Analyze', 'Organize', 'Attribute', 'Outline'],
+  Evaluate: ['Assess', 'Critique', 'Judge', 'Justify', 'Appraise', 'Validate', 'Evaluate', 'Defend', 'Support', 'Argue'],
+  Create: ['Design', 'Develop', 'Formulate', 'Compose', 'Synthesize', 'Construct', 'Generate', 'Invent', 'Plan', 'Produce']
+};;
 
       const taxonomyDescriptions = {
         Remember: 'Recall facts and basic concepts',
@@ -199,7 +191,7 @@
         card.innerHTML = `<h3>${index}. ${level}</h3><p>${taxonomyDescriptions[level]}</p><div class="verbs"></div>`;
         index++;
 
-        taxonomyData[level].forEach(verb => {
+        taxonomyData[level].slice(0, 6).forEach(verb => {
           const btn = document.createElement('button');
           btn.textContent = verb;
           btn.onclick = () => {
@@ -247,6 +239,7 @@
         let sentence = `Learners will ${verb.toLowerCase()} ${skill}`;
         if (context) sentence += ` ${context}`;
         if (success) sentence += ` ${success}`;
+        sentence = sentence.replace(/\.+$/, '');
         sentence += '.';
 
         let measurable = `<strong>Measurable:</strong> ` + (verb ? '✅ Uses an observable action verb' : '⚠️ Consider selecting a measurable action verb.');
