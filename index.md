@@ -1,7 +1,5 @@
 ---
-title: Welcome to my blog
+title: Landing page
 ---
--list 1
--list 2
--list 3
+<a href="CAM6main.html" title="CAM 6 main">CAM 6 main</a>
 
