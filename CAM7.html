@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accessible Course Alignment Activity</title>
+  <style>
+    .dropzone {
+      border: 2px dashed #ccc;
+      padding: 1em;
+      margin: 1em 0;
+      min-height: 50px;
+      background-color: #f9f9f9;
+    }
+    .dropzone:focus-visible {
+      outline: 2px solid #005fcc;
+      background-color: #eef;
+    }
+    .item {
+      border: 1px solid #ccc;
+      padding: 0.5em;
+      margin: 0.5em;
+      cursor: move;
+      background-color: #fff;
+    }
+    .item:focus-visible {
+      outline: 2px solid #005fcc;
+      background-color: #eef;
+    }
+    .correct {
+      background-color: #c8e6c9;
+    }
+    .incorrect {
+      background-color: #ffcdd2;
+    }
+    #feedback {
+      margin-top: 1em;
+      padding: 1em;
+      background-color: #eef;
+    }
+  </style>
+</head>
+<body>
+
+  <h3>Course Alignment Interactive Activity</h3>
+  <p>Match each assessment method to the most appropriate course-level learning outcome (CLO). Use your mouse, keyboard, or select-based interaction to complete the activity.</p>
+
+  <div id="items" role="list" aria-label="List of assessments to match">
+    <div class="item" role="listitem" tabindex="0" draggable="true" id="item1" aria-label="Assessment: Label parts of a kitchen diagram">Label parts of a kitchen diagram</div>
+    <div class="item" role="listitem" tabindex="0" draggable="true" id="item2" aria-label="Assessment: Write a reflection on meal planning choices">Write a reflection on meal planning choices</div>
+    <div class="item" role="listitem" tabindex="0" draggable="true" id="item3" aria-label="Assessment: Compare different kitchen layouts">Compare different kitchen layouts</div>
+  </div>
+
+  <h4 id="clo1-label">CLO 1: Identify components of a basic kitchen</h4>
+  <div class="dropzone" role="list" aria-labelledby="clo1-label" tabindex="0" data-answer="item1"></div>
+
+  <h4 id="clo2-label">CLO 2: Evaluate the effectiveness of different kitchen setups</h4>
+  <div class="dropzone" role="list" aria-labelledby="clo2-label" tabindex="0" data-answer="item3"></div>
+
+  <h4 id="clo3-label">CLO 3: Reflect on personal meal preparation strategies</h4>
+  <div class="dropzone" role="list" aria-labelledby="clo3-label" tabindex="0" data-answer="item2"></div>
+
+  <button onclick="checkAnswers()">Check Answers</button>
+  <button onclick="resetActivity()">Reset Activity</button>
+
+  <div id="feedback" aria-live="polite" role="status" tabindex="0"></div>
+
+  <script>
+    const itemsContainer = document.getElementById('items');
+    const items = document.querySelectorAll('.item');
+    const dropzones = document.querySelectorAll('.dropzone');
+    let draggedItem = null;
+
+    items.forEach(item => {
+      item.addEventListener('dragstart', e => {
+        draggedItem = item;
+      });
+
+      item.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          draggedItem = item;
+          item.setAttribute('aria-grabbed', 'true');
+          item.focus();
+          e.preventDefault();
+        }
+      });
+    });
+
+    dropzones.forEach(zone => {
+      zone.addEventListener('dragover', e => {
+        e.preventDefault();
+      });
+
+      zone.addEventListener('drop', e => {
+        if (draggedItem) {
+          zone.appendChild(draggedItem);
+          draggedItem.setAttribute('aria-grabbed', 'false');
+          draggedItem = null;
+        }
+      });
+
+      zone.addEventListener('keydown', e => {
+        if ((e.key === 'Enter' || e.key === ' ') && draggedItem) {
+          zone.appendChild(draggedItem);
+          draggedItem.setAttribute('aria-grabbed', 'false');
+          draggedItem = null;
+          e.preventDefault();
+        }
+      });
+    });
+
+    function checkAnswers() {
+      let correct = 0;
+      dropzones.forEach(zone => {
+        const answer = zone.dataset.answer;
+        const droppedItem = zone.querySelector('.item');
+        if (droppedItem) {
+          if (droppedItem.id === answer) {
+            droppedItem.classList.add('correct');
+            droppedItem.classList.remove('incorrect');
+            correct++;
+          } else {
+            droppedItem.classList.add('incorrect');
+            droppedItem.classList.remove('correct');
+          }
+        }
+      });
+
+      const feedback = document.getElementById('feedback');
+      feedback.innerHTML = `You got ${correct} out of 3 correct. ${correct === 3 ? 'Well done!' : 'Try again to improve your score.'}`;
+      feedback.focus();
+    }
+
+    function resetActivity() {
+      const feedback = document.getElementById('feedback');
+      feedback.innerHTML = '';
+
+      dropzones.forEach(zone => {
+        const item = zone.querySelector('.item');
+        if (item) {
+          item.classList.remove('correct', 'incorrect');
+          itemsContainer.appendChild(item);
+        }
+      });
+
+      items.forEach(item => {
+        item.classList.remove('correct', 'incorrect');
+      });
+    }
+  </script>
+
+</body>
+</html>
