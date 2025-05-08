@@ -51,6 +51,7 @@
     .feedback {
       margin-top: 0.5rem;
       font-weight: bold;
+      min-height: 1.5rem;
     }
     .correct {
       color: green;
@@ -147,7 +148,7 @@
       const feedback = document.createElement("div");
       feedback.className = "feedback";
       feedback.setAttribute("id", `feedback${index}`);
-
+      feedback.setAttribute("aria-live", "polite");
       card.appendChild(label);
       card.appendChild(statement);
       card.appendChild(select);
@@ -160,12 +161,14 @@
       questions.forEach((q, index) => {
         const select = document.getElementById(`q${index}`);
         const feedback = document.getElementById(`feedback${index}`);
-        if (select.value === q.answer) {
-          feedback.textContent = `✅ ${q.explanation}`;
-          feedback.className = "feedback correct";
+        const userAnswer = select.value;
+
+        if (userAnswer === q.answer) {
+          feedback.innerHTML = `<span class='correct'>✅ ${q.explanation}</span>`;
+        } else if (userAnswer !== "") {
+          feedback.innerHTML = `<span class='incorrect'>❌ Incorrect. Hint: ${q.hint}</span>`;
         } else {
-          feedback.textContent = `❌ Incorrect. Hint: ${q.hint}`;
-          feedback.className = "feedback incorrect";
+          feedback.innerHTML = `<span class='incorrect'>❌ Please select an answer.</span>`;
         }
       });
     });
