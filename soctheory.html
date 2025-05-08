@@ -71,27 +71,39 @@
     const questions = [
       {
         text: "The way people dress for job interviews (suits, ties, no mustard stains) shows how they interpret and perform professionalism in hopes of being accepted.",
-        answer: "Symbolic Interactionism"
+        answer: "Symbolic Interactionism",
+        explanation: "Correct! This reflects how shared symbols (like attire) convey meaning in social interactions.",
+        hint: "Think about how individual behavior reflects shared meanings."
       },
       {
         text: "The grading system benefits students with access to private tutors and quiet study spaces, reinforcing class inequalities while pretending to be 'merit-based.'",
-        answer: "Conflict Theory"
+        answer: "Conflict Theory",
+        explanation: "Correct! This highlights how systems can reinforce social inequality and benefit the powerful.",
+        hint: "Consider who benefits and who is disadvantaged in this scenario."
       },
       {
         text: "Marriage is a social institution that helps organize reproduction, child-rearing, and the division of labor — plus someone always remembers to take the trash out.",
-        answer: "Structural Functionalism"
+        answer: "Structural Functionalism",
+        explanation: "Correct! This demonstrates how institutions function to maintain social stability and roles.",
+        hint: "Which theory focuses on stability, roles, and institutions?"
       },
       {
         text: "A teenager’s 'likes' on social media shape how they see themselves, reinforcing the symbolic meaning of online popularity and self-worth.",
-        answer: "Symbolic Interactionism"
+        answer: "Symbolic Interactionism",
+        explanation: "Correct! This reflects how meaning and identity are shaped through social symbols and interactions.",
+        hint: "What theory is concerned with everyday social interactions and meaning-making?"
       },
       {
         text: "Wealthy neighborhoods have better schools because of property taxes. It’s not a coincidence — it’s how the system maintains inequality.",
-        answer: "Conflict Theory"
+        answer: "Conflict Theory",
+        explanation: "Correct! This reveals how economic structures maintain inequality between social groups.",
+        hint: "Focus on structural inequality and power distribution."
       },
       {
         text: "Religion provides moral guidance, social cohesion, and a reason to not eat hot dogs on certain days.",
-        answer: "Structural Functionalism"
+        answer: "Structural Functionalism",
+        explanation: "Correct! This describes how religion contributes to social order and cohesion.",
+        hint: "Think about how institutions like religion help society function."
       }
     ];
 
@@ -149,10 +161,10 @@
         const select = document.getElementById(`q${index}`);
         const feedback = document.getElementById(`feedback${index}`);
         if (select.value === q.answer) {
-          feedback.textContent = "✅ Correct!";
+          feedback.textContent = `✅ ${q.explanation}`;
           feedback.className = "feedback correct";
         } else {
-          feedback.textContent = `❌ Incorrect. The correct answer is: ${q.answer}`;
+          feedback.textContent = `❌ Incorrect. Hint: ${q.hint}`;
           feedback.className = "feedback incorrect";
         }
       });
