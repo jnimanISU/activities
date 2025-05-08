@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Course Alignment Activity</title>
+  <title>Accessible Drag and Drop Activity</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
     h3, h4 { margin-top: 30px; }
@@ -22,7 +22,7 @@
       background-color: #e0f7fa;
       border: 1px solid #00796b;
       border-radius: 4px;
-      cursor: move;
+      cursor: grab;
     }
     .dropzone {
       min-height: 100px;
@@ -36,33 +36,33 @@
     .incorrect { background-color: #ffcdd2; border-color: #d32f2f; }
     button { margin-top: 20px; padding: 10px 15px; font-size: 16px; }
     .hint { font-style: italic; color: #333; margin-top: 10px; white-space: pre-line; }
-    .visually-hidden { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+    .item:focus-visible, .dropzone:focus-visible { outline: 3px solid #007bff; }
+    .item.dragging { background-color: #ffeb3b; }
   </style>
 </head>
 <body>
 
 <h3 id="activity-title">📚 Course Alignment Activity: Cooking 101</h3>
-<p><em>Step 1: Drag each Module-level Learning Objective (MLO) into the appropriate Course-level Objective (CLO).<br>
-Step 2: Drag each Assessment or Learning Activity into the appropriate MLO.</em></p>
+<p><em>Use your mouse or keyboard to complete this activity. <strong>Keyboard users:</strong> Tab to a learning item and press Enter or Space to select it, then tab to a drop zone and press Enter or Space to place it.</em></p>
 
 <h4>Step 1: Match MLOs to CLOs</h4>
-<div class="container" aria-labelledby="activity-title">
+<div class="container">
   <div class="column">
     <h4>CLO1: Demonstrate kitchen safety and tool usage</h4>
-    <div class="dropzone" id="clo1" aria-label="Drop zone for CLO1"></div>
+    <div class="dropzone" id="clo1" tabindex="0" aria-label="Drop zone for CLO1"></div>
   </div>
   <div class="column">
     <h4>CLO2: Apply basic cooking techniques to prepare meals</h4>
-    <div class="dropzone" id="clo2" aria-label="Drop zone for CLO2"></div>
+    <div class="dropzone" id="clo2" tabindex="0" aria-label="Drop zone for CLO2"></div>
   </div>
 </div>
 
 <h4>Available Module-level Objectives (MLOs)</h4>
 <div class="container">
   <div class="column" id="mloStart">
-    <div class="item" draggable="true" id="mlo1" tabindex="0">MLO1: Identify basic kitchen tools</div>
-    <div class="item" draggable="true" id="mlo2" tabindex="0">MLO2: Explain safe food handling practices</div>
-    <div class="item" draggable="true" id="mlo3" tabindex="0">MLO3: Prepare a balanced breakfast</div>
+    <div class="item" tabindex="0" id="mlo1" draggable="true">MLO1: Identify basic kitchen tools</div>
+    <div class="item" tabindex="0" id="mlo2" draggable="true">MLO2: Apply safe food handling practice</div>
+    <div class="item" tabindex="0" id="mlo3" draggable="true">MLO3: Prepare a balanced breakfast</div>
   </div>
 </div>
 
@@ -70,27 +70,27 @@ Step 2: Drag each Assessment or Learning Activity into the appropriate MLO.</em>
 <div class="container">
   <div class="column">
     <h4>MLO1: Identify basic kitchen tools</h4>
-    <div class="dropzone" id="mloDrop1" aria-label="Drop zone for MLO1"></div>
+    <div class="dropzone" id="mloDrop1" tabindex="0" aria-label="Drop zone for MLO1"></div>
   </div>
   <div class="column">
-    <h4>MLO2: Explain safe food handling practices</h4>
-    <div class="dropzone" id="mloDrop2" aria-label="Drop zone for MLO2"></div>
+    <h4>MLO2: Apply safe food handling practice</h4>
+    <div class="dropzone" id="mloDrop2" tabindex="0" aria-label="Drop zone for MLO2"></div>
   </div>
   <div class="column">
     <h4>MLO3: Prepare a balanced breakfast</h4>
-    <div class="dropzone" id="mloDrop3" aria-label="Drop zone for MLO3"></div>
+    <div class="dropzone" id="mloDrop3" tabindex="0" aria-label="Drop zone for MLO3"></div>
   </div>
 </div>
 
 <h4>Available Assessments and Learning Activities</h4>
 <div class="container">
   <div class="column" id="assessmentStart">
-    <div class="item" draggable="true" id="a1" tabindex="0">Assessment: Label parts of a kitchen diagram</div>
-    <div class="item" draggable="true" id="a2" tabindex="0">Assessment: Complete a safety checklist</div>
-    <div class="item" draggable="true" id="a3" tabindex="0">Assessment: Submit photo of breakfast plate</div>
-    <div class="item" draggable="true" id="la1" tabindex="0">Learning Activity: Practice quiz on kitchen tools</div>
-    <div class="item" draggable="true" id="la2" tabindex="0">Learning Activity: Safety role-play</div>
-    <div class="item" draggable="true" id="la3" tabindex="0">Learning Activity: Live cooking demonstration</div>
+    <div class="item" tabindex="0" id="a1" draggable="true">Assessment: Label parts of a kitchen diagram</div>
+    <div class="item" tabindex="0" id="a2" draggable="true">Assessment: Complete a safety checklist</div>
+    <div class="item" tabindex="0" id="a3" draggable="true">Assessment: Submit video process of breakfast plate</div>
+    <div class="item" tabindex="0" id="la1" draggable="true">Learning Activity: Practice quiz on kitchen tools</div>
+    <div class="item" tabindex="0" id="la2" draggable="true">Learning Activity: Safety role-play</div>
+    <div class="item" tabindex="0" id="la3" draggable="true">Learning Activity: Compare nutrition options</div>
   </div>
 </div>
 
@@ -100,19 +100,50 @@ Step 2: Drag each Assessment or Learning Activity into the appropriate MLO.</em>
 <div id="hints" class="hint"></div>
 
 <script>
+  let draggedItem = null;
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const shuffle = (containerId) => {
+      const container = document.getElementById(containerId);
+      const children = Array.from(container.children);
+      children.sort(() => Math.random() - 0.5);
+      children.forEach(child => container.appendChild(child));
+    };
+    shuffle("mloStart");
+    shuffle("assessmentStart");
+  });
+
   document.querySelectorAll('.item').forEach(item => {
-    item.addEventListener('dragstart', (e) => {
+    item.addEventListener('dragstart', e => {
       e.dataTransfer.setData('text/plain', e.target.id);
+    });
+
+    item.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        draggedItem = item;
+        item.classList.add('dragging');
+        e.preventDefault();
+      }
     });
   });
 
   document.querySelectorAll('.dropzone').forEach(dropzone => {
-    dropzone.addEventListener('dragover', (e) => e.preventDefault());
-    dropzone.addEventListener('drop', (e) => {
+    dropzone.addEventListener('dragover', e => e.preventDefault());
+
+    dropzone.addEventListener('drop', e => {
       e.preventDefault();
       const id = e.dataTransfer.getData('text');
       const dragged = document.getElementById(id);
-      if (dragged) e.target.appendChild(dragged);
+      if (dragged) dropzone.appendChild(dragged);
+    });
+
+    dropzone.addEventListener('keydown', e => {
+      if ((e.key === 'Enter' || e.key === ' ') && draggedItem) {
+        e.preventDefault();
+        dropzone.appendChild(draggedItem);
+        draggedItem.classList.remove('dragging');
+        draggedItem = null;
+      }
     });
   });
 
@@ -134,7 +165,6 @@ Step 2: Drag each Assessment or Learning Activity into the appropriate MLO.</em>
 
   function checkAnswers() {
     let allCorrect = true;
-    let feedback = '';
     let hintText = '';
 
     Object.entries(correctMappings).forEach(([zoneId, correctIds]) => {
@@ -147,7 +177,7 @@ Step 2: Drag each Assessment or Learning Activity into the appropriate MLO.</em>
 
       if (!isCorrect) {
         allCorrect = false;
-        hintText += `\u2022 ${hints[zoneId]}\n`;
+        hintText += `• ${hints[zoneId]}\n`;
       }
     });
 
@@ -159,18 +189,8 @@ Step 2: Drag each Assessment or Learning Activity into the appropriate MLO.</em>
   }
 
   function resetActivity() {
-    const mloStart = document.getElementById('mloStart');
-    const assessmentStart = document.getElementById('assessmentStart');
-
-    ['mlo1', 'mlo2', 'mlo3'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) mloStart.appendChild(el);
-    });
-
-    ['a1', 'a2', 'a3', 'la1', 'la2', 'la3'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) assessmentStart.appendChild(el);
-    });
+    ['mlo1', 'mlo2', 'mlo3'].forEach(id => document.getElementById('mloStart').appendChild(document.getElementById(id)));
+    ['a1', 'a2', 'a3', 'la1', 'la2', 'la3'].forEach(id => document.getElementById('assessmentStart').appendChild(document.getElementById(id)));
 
     document.querySelectorAll('.dropzone').forEach(dz => dz.classList.remove('correct', 'incorrect'));
     document.getElementById('feedback').textContent = '';
