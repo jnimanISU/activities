@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Theory Match-Up: Sociological Showdown</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f5f5f5;
+      padding: 2rem;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    select {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005fa3;
+    }
+    .feedback {
+      margin-top: 0.5rem;
+      font-weight: bold;
+    }
+    .correct {
+      color: green;
+    }
+    .incorrect {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Theory Match-Up: Sociological Showdown</h1>
+  <form id="quiz-form" aria-describedby="instructions">
+    <p id="instructions">Match each sociological statement to one of the three main theories. When you're done, click Submit to check your answers!</p>
+    <div id="quiz-container"></div>
+    <button type="submit">Submit</button>
+  </form>
+  <script>
+    const questions = [
+      {
+        text: "The way people dress for job interviews (suits, ties, no mustard stains) shows how they interpret and perform professionalism in hopes of being accepted.",
+        answer: "Symbolic Interactionism"
+      },
+      {
+        text: "The grading system benefits students with access to private tutors and quiet study spaces, reinforcing class inequalities while pretending to be 'merit-based.'",
+        answer: "Conflict Theory"
+      },
+      {
+        text: "Marriage is a social institution that helps organize reproduction, child-rearing, and the division of labor — plus someone always remembers to take the trash out.",
+        answer: "Structural Functionalism"
+      },
+      {
+        text: "A teenager’s 'likes' on social media shape how they see themselves, reinforcing the symbolic meaning of online popularity and self-worth.",
+        answer: "Symbolic Interactionism"
+      },
+      {
+        text: "Wealthy neighborhoods have better schools because of property taxes. It’s not a coincidence — it’s how the system maintains inequality.",
+        answer: "Conflict Theory"
+      },
+      {
+        text: "Religion provides moral guidance, social cohesion, and a reason to not eat hot dogs on certain days.",
+        answer: "Structural Functionalism"
+      }
+    ];
+
+    const options = [
+      "Structural Functionalism",
+      "Conflict Theory",
+      "Symbolic Interactionism"
+    ];
+
+    const container = document.getElementById("quiz-container");
+
+    questions.forEach((q, index) => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const label = document.createElement("label");
+      label.setAttribute("for", `q${index}`);
+      label.textContent = `Statement ${index + 1}`;
+
+      const statement = document.createElement("p");
+      statement.textContent = q.text;
+
+      const select = document.createElement("select");
+      select.setAttribute("aria-label", `Select theory for statement ${index + 1}`);
+      select.setAttribute("id", `q${index}`);
+
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "";
+      defaultOption.textContent = "-- Choose a theory --";
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      select.appendChild(defaultOption);
+
+      options.forEach(option => {
+        const opt = document.createElement("option");
+        opt.value = option;
+        opt.textContent = option;
+        select.appendChild(opt);
+      });
+
+      const feedback = document.createElement("div");
+      feedback.className = "feedback";
+      feedback.setAttribute("id", `feedback${index}`);
+
+      card.appendChild(label);
+      card.appendChild(statement);
+      card.appendChild(select);
+      card.appendChild(feedback);
+      container.appendChild(card);
+    });
+
+    document.getElementById("quiz-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+      questions.forEach((q, index) => {
+        const select = document.getElementById(`q${index}`);
+        const feedback = document.getElementById(`feedback${index}`);
+        if (select.value === q.answer) {
+          feedback.textContent = "✅ Correct!";
+          feedback.className = "feedback correct";
+        } else {
+          feedback.textContent = `❌ Incorrect. The correct answer is: ${q.answer}`;
+          feedback.className = "feedback incorrect";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
