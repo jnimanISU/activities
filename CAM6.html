@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Course Alignment Activity</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h2, h3 { margin-top: 30px; }
+    .container { display: flex; flex-wrap: wrap; gap: 20px; }
+    .column {
+      flex: 1;
+      min-width: 200px;
+      padding: 10px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+    .column h4 { text-align: center; }
+    .item {
+      padding: 8px;
+      margin: 5px 0;
+      background-color: #e0f7fa;
+      border: 1px solid #00796b;
+      border-radius: 4px;
+      cursor: move;
+    }
+    .dropzone {
+      min-height: 100px;
+      padding: 10px;
+      margin-top: 10px;
+      border: 2px dashed #aaa;
+      border-radius: 6px;
+      background-color: #fff;
+    }
+    .correct { background-color: #d0f0c0; border-color: #388e3c; }
+    .incorrect { background-color: #ffcdd2; border-color: #d32f2f; }
+    button { margin-top: 20px; padding: 10px 15px; font-size: 16px; }
+  </style>
+</head>
+<body>
+
+<h2>📚 Course Alignment Activity: Cooking 101</h2>
+<p><em>Step 1: Drag each Module-level Learning Objective (MLO) into the appropriate Course-level Objective (CLO).<br>
+Step 2: Drag each Assessment or Learning Activity into the appropriate MLO.</em></p>
+
+<h3>Step 1: Match MLOs to CLOs</h3>
+<div class="container">
+  <div class="column">
+    <h4>CLO1: Understand kitchen safety and tool usage</h4>
+    <div class="dropzone" id="clo1"></div>
+  </div>
+  <div class="column">
+    <h4>CLO2: Apply basic cooking techniques to prepare meals</h4>
+    <div class="dropzone" id="clo2"></div>
+  </div>
+</div>
+
+<h4>Available Module-level Objectives (MLOs)</h4>
+<div class="container">
+  <div class="column">
+    <div class="item" draggable="true" id="mlo1">MLO1: Identify basic kitchen tools</div>
+    <div class="item" draggable="true" id="mlo2">MLO2: Demonstrate safe food handling practices</div>
+    <div class="item" draggable="true" id="mlo3">MLO3: Prepare a balanced breakfast</div>
+  </div>
+</div>
+
+<h3>Step 2: Match Assessments and Learning Activities to MLOs</h3>
+<div class="container">
+  <div class="column">
+    <h4>MLO1: Identify basic kitchen tools</h4>
+    <div class="dropzone" id="mloDrop1"></div>
+  </div>
+  <div class="column">
+    <h4>MLO2: Demonstrate safe food handling practices</h4>
+    <div class="dropzone" id="mloDrop2"></div>
+  </div>
+  <div class="column">
+    <h4>MLO3: Prepare a balanced breakfast</h4>
+    <div class="dropzone" id="mloDrop3"></div>
+  </div>
+</div>
+
+<h4>Available Assessments and Learning Activities</h4>
+<div class="container">
+  <div class="column">
+    <div class="item" draggable="true" id="a1">Assessment: Label parts of a kitchen diagram</div>
+    <div class="item" draggable="true" id="a2">Assessment: Complete a safety checklist</div>
+    <div class="item" draggable="true" id="a3">Assessment: Submit photo of breakfast plate</div>
+    <div class="item" draggable="true" id="la1">Learning Activity: Watch video on kitchen tools</div>
+    <div class="item" draggable="true" id="la2">Learning Activity: Safety role-play</div>
+    <div class="item" draggable="true" id="la3">Learning Activity: Live cooking demonstration</div>
+  </div>
+</div>
+
+<button onclick="checkAnswers()">Check Answers</button>
+<button onclick="resetActivity()">Reset</button>
+<div id="feedback" style="margin-top: 20px; font-weight: bold;"></div>
+
+<script>
+  document.querySelectorAll('.item').forEach(item => {
+    item.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', e.target.id);
+    });
+  });
+
+  document.querySelectorAll('.dropzone').forEach(dropzone => {
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+    });
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const id = e.dataTransfer.getData('text');
+      const draggedElement = document.getElementById(id);
+      if (draggedElement) {
+        e.target.appendChild(draggedElement);
+      }
+    });
+  });
+
+  const correctMappings = {
+    clo1: ['mlo1', 'mlo2'],
+    clo2: ['mlo3'],
+    mloDrop1: ['a1', 'la1'],
+    mloDrop2: ['a2', 'la2'],
+    mloDrop3: ['a3', 'la3']
+  };
+
+  function checkAnswers() {
+    let feedback = '';
+    let allCorrect = true;
+
+    Object.entries(correctMappings).forEach(([dropzoneId, correctIds]) => {
+      const dropzone = document.getElementById(dropzoneId);
+      const droppedIds = Array.from(dropzone.children).map(el => el.id);
+      const isCorrect = correctIds.every(id => droppedIds.includes(id)) && droppedIds.every(id => correctIds.includes(id));
+      dropzone.classList.remove('correct', 'incorrect');
+      dropzone.classList.add(isCorrect ? 'correct' : 'incorrect');
+      if (!isCorrect) allCorrect = false;
+    });
+
+    feedback = allCorrect ? '✅ Great job! Everything is correctly aligned.' : '❌ Some items are not correctly placed. Check red zones and try again!';
+    document.getElementById('feedback').textContent = feedback;
+  }
+
+  function resetActivity() {
+    const initialColumn = document.querySelectorAll('.container')[2].children[0];
+    const mloContainer = document.querySelectorAll('.container')[1];
+    const assessmentContainer = document.querySelectorAll('.container')[4].children[0];
+
+    ['mlo1', 'mlo2', 'mlo3'].forEach(id => initialColumn.appendChild(document.getElementById(id)));
+    ['a1', 'a2', 'a3', 'la1', 'la2', 'la3'].forEach(id => assessmentContainer.appendChild(document.getElementById(id)));
+
+    document.querySelectorAll('.dropzone').forEach(dz => dz.classList.remove('correct', 'incorrect'));
+    document.getElementById('feedback').textContent = '';
+  }
+</script>
+
+</body>
+</html>
