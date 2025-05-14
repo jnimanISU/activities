@@ -43,8 +43,9 @@
     .dropped {
       opacity: 0.6;
     }
-    #submitBtn {
+    #submitBtn, #resetBtn {
       margin-top: 30px;
+      margin-right: 10px;
       padding: 10px 20px;
       font-size: 1rem;
       background-color: #0057b8;
@@ -77,7 +78,7 @@
     </div>
   </div>
 
-  <div class="container">
+  <div class="container" id="items">
     <div class="draggable" draggable="true" ondragstart="drag(event)" id="item1">Public nudity at a beach</div>
     <div class="draggable" draggable="true" ondragstart="drag(event)" id="item2">Cheating on a partner</div>
     <div class="draggable" draggable="true" ondragstart="drag(event)" id="item3">Jaywalking</div>
@@ -87,6 +88,7 @@
   </div>
 
   <button id="submitBtn" onclick="showFeedback()">Submit</button>
+  <button id="resetBtn" onclick="resetActivity()">Reset</button>
   <div id="feedback"></div>
 
   <script>
@@ -134,22 +136,35 @@
         feedback += "<li>Please drag the items into the categories before submitting.</li>";
       } else {
         if (!user.deviant.includes("item2")) {
-          feedback += "<li>Cheating on a partner isn't illegal, but it breaks relationship norms—it's deviant.</li>";
+          feedback += "<li>Does cheating break laws or social norms more strongly? Reflect on how it's viewed legally versus socially.</li>";
+        } else {
+          feedback += "<li>Correct: Cheating on a partner breaks norms but is not illegal.</li>";
         }
+
         if (!user.illegal.includes("item3")) {
-          feedback += "<li>Jaywalking is technically illegal, even if not seen as deviant by most.</li>";
+          feedback += "<li>Jaywalking is common but still considered a legal violation. Where should that go?</li>";
+        } else {
+          feedback += "<li>Correct: Jaywalking is illegal but often not stigmatized.</li>";
         }
+
         if (!user.both.includes("item6")) {
-          feedback += "<li>Insider trading is both illegal and widely condemned—try placing it under 'Both'.</li>";
-        }
-        if (feedback === "<h3>Feedback:</h3><ul>") {
-          feedback += "<li>Nice job! Your choices reflect an understanding of how social norms and laws interact.</li>";
+          feedback += "<li>Think about insider trading—is it just unethical, or also criminal? Where might it belong?</li>";
+        } else {
+          feedback += "<li>Correct: Insider trading is both deviant and illegal.</li>";
         }
       }
 
       feedback += "</ul>";
       feedbackEl.innerHTML = feedback;
       feedbackEl.style.display = "block";
+    }
+
+    function resetActivity() {
+      const items = document.querySelectorAll(".draggable");
+      const startZone = document.getElementById("items");
+      items.forEach(item => startZone.appendChild(item));
+      document.getElementById("feedback").style.display = "none";
+      document.getElementById("feedback").innerHTML = "";
     }
   </script>
 </body>
