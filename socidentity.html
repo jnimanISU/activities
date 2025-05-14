@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Identity Map Generator</title>
+  <title>Interactive Identity Map</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -16,16 +16,16 @@
       text-align: center;
     }
     .container {
-      max-width: 800px;
+      max-width: 900px;
       margin: auto;
     }
     .question-group {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
     label {
       font-weight: bold;
     }
-    textarea, input {
+    textarea, select, input[type="text"] {
       width: 100%;
       padding: 10px;
       margin-top: 5px;
@@ -45,38 +45,88 @@
       background: #f0f0f0;
       padding: 15px;
       border-left: 5px solid #003865;
-      margin-top: 20px;
+      margin-top: 30px;
     }
-    .sr-only {
-      position: absolute;
-      left: -10000px;
-      top: auto;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
+    fieldset {
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    legend {
+      font-weight: bold;
+      color: #003865;
+    }
+    .hint {
+      font-size: 0.9em;
+      color: #555;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
   <div class="container" role="main">
-    <h1>Identity Map Generator</h1>
+    <h1>Interactive Identity Map</h1>
+    <p>Use this activity to map how socialization, group membership, and roles shape your identity. This builds on Chapters 4–6 of your sociology textbook.</p>
     <form id="identityForm">
-      <div class="question-group">
-        <label for="agents">List your key agents of socialization (e.g., family, peers, media, education, religion):</label>
-        <textarea id="agents" required aria-describedby="agentsHint"></textarea>
-        <div id="agentsHint" class="sr-only">For example, list people or institutions that shaped your beliefs and behaviors.</div>
-      </div>
-      <div class="question-group">
-        <label for="roles">Describe some of your role expectations in your social groups (e.g., student, friend, employee):</label>
-        <textarea id="roles" required aria-describedby="rolesHint"></textarea>
-        <div id="rolesHint" class="sr-only">For example, how are you expected to behave in your social positions?</div>
-      </div>
-      <div class="question-group">
-        <label for="groups">Name any formal or informal groups you are part of (e.g., sports team, club, family):</label>
-        <textarea id="groups" required aria-describedby="groupsHint"></textarea>
-        <div id="groupsHint" class="sr-only">For example, name communities or groups you regularly engage with.</div>
-      </div>
-      <button type="button" onclick="generateReflection()">Generate Reflection</button>
+
+      <fieldset>
+        <legend>1. Agents of Socialization</legend>
+        <p class="hint">Agents of socialization are people and institutions that influence your social development, such as family, friends, school, media, and religion (Chapter 5).</p>
+        <label for="agent1">Agent #1:</label>
+        <input type="text" id="agent1" required>
+        <label for="agentType1">Type:</label>
+        <select id="agentType1">
+          <option value="Family">Family</option>
+          <option value="Peers">Peers</option>
+          <option value="Media">Media</option>
+          <option value="Religion">Religion</option>
+          <option value="Education">Education</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <label for="agent2">Agent #2:</label>
+        <input type="text" id="agent2">
+        <label for="agentType2">Type:</label>
+        <select id="agentType2">
+          <option value="Family">Family</option>
+          <option value="Peers">Peers</option>
+          <option value="Media">Media</option>
+          <option value="Religion">Religion</option>
+          <option value="Education">Education</option>
+          <option value="Other">Other</option>
+        </select>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. Role Expectations</legend>
+        <p class="hint">A role is the expected behavior attached to a status (Chapter 4). Ascribed roles are assigned at birth (e.g., sibling), while achieved roles are earned (e.g., student or employee).</p>
+        <label for="role1">Role #1:</label>
+        <input type="text" id="role1" required>
+        <label for="roleType1">Type:</label>
+        <select id="roleType1">
+          <option value="Ascribed">Ascribed</option>
+          <option value="Achieved">Achieved</option>
+        </select>
+        <label for="conflict1">Does this role cause strain or conflict? Describe:</label>
+        <textarea id="conflict1"></textarea>
+        <p class="hint">Role strain happens when it's hard to meet expectations within one role. Role conflict happens when expectations from different roles clash.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>3. Group Affiliations</legend>
+        <p class="hint">Groups are collections of people with shared norms and interactions (Chapter 6). Primary groups are close and personal (e.g., family), while secondary groups are larger and goal-oriented (e.g., class, workplace). Reference groups are those you compare yourself to, and out-groups are those you don’t identify with.</p>
+        <label for="group1">Group #1:</label>
+        <input type="text" id="group1" required>
+        <label for="groupType1">Type:</label>
+        <select id="groupType1">
+          <option value="Primary">Primary</option>
+          <option value="Secondary">Secondary</option>
+          <option value="Reference">Reference</option>
+          <option value="Out-group">Out-group</option>
+        </select>
+      </fieldset>
+
+      <button type="button" onclick="generateReflection()">Generate Sociological Map</button>
     </form>
 
     <div class="results" id="output" tabindex="-1" aria-live="polite"></div>
@@ -84,22 +134,33 @@
 
   <script>
     function generateReflection() {
-      const agents = document.getElementById('agents').value;
-      const roles = document.getElementById('roles').value;
-      const groups = document.getElementById('groups').value;
+      const agent1 = document.getElementById('agent1').value;
+      const agentType1 = document.getElementById('agentType1').value;
+      const agent2 = document.getElementById('agent2').value;
+      const agentType2 = document.getElementById('agentType2').value;
 
-      const reflection = `
-        <h2>Your Sociological Identity Reflection</h2>
-        <p><strong>Agents of Socialization:</strong> ${agents}</p>
-        <p><strong>Role Expectations:</strong> ${roles}</p>
-        <p><strong>Group Affiliations:</strong> ${groups}</p>
-        <p>From a sociological perspective, your identity is shaped by the interplay of these agents, roles, and group memberships. 
-        Consider how norms, values, and social expectations influence your self-concept and behavior across different contexts.</p>
+      const role1 = document.getElementById('role1').value;
+      const roleType1 = document.getElementById('roleType1').value;
+      const conflict1 = document.getElementById('conflict1').value;
+
+      const group1 = document.getElementById('group1').value;
+      const groupType1 = document.getElementById('groupType1').value;
+
+      const html = `
+        <h2>Your Sociological Identity Map</h2>
+        <p><strong>Agents of Socialization:</strong><br>
+          - ${agent1} (${agentType1})<br>
+          - ${agent2 ? `${agent2} (${agentType2})` : 'N/A'}
+        </p>
+        <p><strong>Role:</strong> ${role1} (${roleType1})</p>
+        <p>${conflict1 ? `<strong>Role Conflict/Strain:</strong> ${conflict1}` : ''}</p>
+        <p><strong>Group:</strong> ${group1} (${groupType1})</p>
+        <p><em>This map integrates key ideas from Chapter 4 (roles and statuses), Chapter 5 (socialization agents), and Chapter 6 (group membership). Consider how these shape your social identity and behavior.</em></p>
       `;
 
-      const outputDiv = document.getElementById('output');
-      outputDiv.innerHTML = reflection;
-      outputDiv.focus();
+      const output = document.getElementById('output');
+      output.innerHTML = html;
+      output.focus();
     }
   </script>
 </body>
