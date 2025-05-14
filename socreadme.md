@@ -3,7 +3,7 @@ Visit activity pages:
 1. [Theory Match-Up: Sociological Showdown](https://jnimanISU.github.io/activities/soctheory.html)
 2. [Build-a-Study: Sociological Research Design](https://jnimanISU.github.io/activities/socresearch.html)
 3. [Practice: Culture Concepts in Sociology](https://jnimanISU.github.io/activities/socculture.html)
-4. [Title](https://jnimanISU.github.io/activities/soctheory.html)
+4. [Social Identity Map](https://jnimanISU.github.io/activities/socidentity.html)
 5. [Title](https://jnimanISU.github.io/activities/soctheory.html)
 6. [Title](https://jnimanISU.github.io/activities/soctheory.html)
 7. [Title](https://jnimanISU.github.io/activities/soctheory.html)
