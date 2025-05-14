@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Identity Map Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: white;
+      color: #003865;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+    .question-group {
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+    }
+    textarea, input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+    button {
+      background-color: #003865;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0054a6;
+    }
+    .results {
+      background: #f0f0f0;
+      padding: 15px;
+      border-left: 5px solid #003865;
+      margin-top: 20px;
+    }
+    .sr-only {
+      position: absolute;
+      left: -10000px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="main">
+    <h1>Identity Map Generator</h1>
+    <form id="identityForm">
+      <div class="question-group">
+        <label for="agents">List your key agents of socialization (e.g., family, peers, media, education, religion):</label>
+        <textarea id="agents" required aria-describedby="agentsHint"></textarea>
+        <div id="agentsHint" class="sr-only">For example, list people or institutions that shaped your beliefs and behaviors.</div>
+      </div>
+      <div class="question-group">
+        <label for="roles">Describe some of your role expectations in your social groups (e.g., student, friend, employee):</label>
+        <textarea id="roles" required aria-describedby="rolesHint"></textarea>
+        <div id="rolesHint" class="sr-only">For example, how are you expected to behave in your social positions?</div>
+      </div>
+      <div class="question-group">
+        <label for="groups">Name any formal or informal groups you are part of (e.g., sports team, club, family):</label>
+        <textarea id="groups" required aria-describedby="groupsHint"></textarea>
+        <div id="groupsHint" class="sr-only">For example, name communities or groups you regularly engage with.</div>
+      </div>
+      <button type="button" onclick="generateReflection()">Generate Reflection</button>
+    </form>
+
+    <div class="results" id="output" tabindex="-1" aria-live="polite"></div>
+  </div>
+
+  <script>
+    function generateReflection() {
+      const agents = document.getElementById('agents').value;
+      const roles = document.getElementById('roles').value;
+      const groups = document.getElementById('groups').value;
+
+      const reflection = `
+        <h2>Your Sociological Identity Reflection</h2>
+        <p><strong>Agents of Socialization:</strong> ${agents}</p>
+        <p><strong>Role Expectations:</strong> ${roles}</p>
+        <p><strong>Group Affiliations:</strong> ${groups}</p>
+        <p>From a sociological perspective, your identity is shaped by the interplay of these agents, roles, and group memberships. 
+        Consider how norms, values, and social expectations influence your self-concept and behavior across different contexts.</p>
+      `;
+
+      const outputDiv = document.getElementById('output');
+      outputDiv.innerHTML = reflection;
+      outputDiv.focus();
+    }
+  </script>
+</body>
+</html>
