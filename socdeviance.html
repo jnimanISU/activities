@@ -14,6 +14,12 @@
     h1 {
       color: #003366;
     }
+    .instructions {
+      background: #e8f4fc;
+      border-left: 4px solid #3399cc;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
     .container {
       display: flex;
       gap: 40px;
@@ -23,6 +29,7 @@
     .dropzone {
       flex: 1;
       min-width: 250px;
+      min-height: 200px;
       border: 2px dashed #003366;
       border-radius: 10px;
       padding: 20px;
@@ -53,38 +60,47 @@
       border: none;
       cursor: pointer;
     }
-    #feedback {
+    .feedback-box {
       margin-top: 20px;
-      background: #dff0d8;
       padding: 15px;
-      border-left: 4px solid #3c763d;
-      display: none;
+      border-left: 4px solid;
+    }
+    .correct {
+      background: #d4edda;
+      border-color: #28a745;
+    }
+    .incorrect {
+      background: #f8d7da;
+      border-color: #dc3545;
     }
   </style>
 </head>
 <body>
   <h1>Deviant or Illegal? Drag-and-Drop Activity</h1>
-  <p>Drag each behavior to the correct category. Some may be <strong>deviant but not illegal</strong>, <strong>illegal but not deviant</strong>, or <strong>both</strong>.</p>
+  <div class="instructions">
+    <p><strong>Instructions:</strong> Drag each item into the correct category. You can use a mouse or keyboard.</p>
+    <p><strong>Keyboard Instructions:</strong> Use <kbd>Tab</kbd> to navigate. Press <kbd>Enter</kbd> or <kbd>Space</kbd> on a draggable item to select it. Navigate to a dropzone and press <kbd>Enter</kbd> or <kbd>Space</kbd> again to drop it.</p>
+  </div>
 
   <div class="container">
-    <div class="dropzone" ondrop="drop(event)" ondragover="allowDrop(event)" id="deviant">
+    <div class="dropzone" ondrop="drop(event)" ondragover="allowDrop(event)" id="deviant" tabindex="0">
       <h2>Deviant, Not Illegal</h2>
     </div>
-    <div class="dropzone" ondrop="drop(event)" ondragover="allowDrop(event)" id="illegal">
+    <div class="dropzone" ondrop="drop(event)" ondragover="allowDrop(event)" id="illegal" tabindex="0">
       <h2>Illegal, Not Deviant</h2>
     </div>
-    <div class="dropzone" ondrop="drop(event)" ondragover="allowDrop(event)" id="both">
+    <div class="dropzone" ondrop="drop(event)" ondragover="allowDrop(event)" id="both" tabindex="0">
       <h2>Both Deviant & Illegal</h2>
     </div>
   </div>
 
   <div class="container" id="items">
-    <div class="draggable" draggable="true" ondragstart="drag(event)" id="item1">Public nudity at a beach</div>
-    <div class="draggable" draggable="true" ondragstart="drag(event)" id="item2">Cheating on a partner</div>
-    <div class="draggable" draggable="true" ondragstart="drag(event)" id="item3">Jaywalking</div>
-    <div class="draggable" draggable="true" ondragstart="drag(event)" id="item4">Smoking marijuana (in a state where it is illegal)</div>
-    <div class="draggable" draggable="true" ondragstart="drag(event)" id="item5">Lying to a friend</div>
-    <div class="draggable" draggable="true" ondragstart="drag(event)" id="item6">Insider trading</div>
+    <div class="draggable" draggable="true" tabindex="0" ondragstart="drag(event)" id="item1">Public nudity at a beach</div>
+    <div class="draggable" draggable="true" tabindex="0" ondragstart="drag(event)" id="item2">Cheating on a partner</div>
+    <div class="draggable" draggable="true" tabindex="0" ondragstart="drag(event)" id="item3">Jaywalking</div>
+    <div class="draggable" draggable="true" tabindex="0" ondragstart="drag(event)" id="item4">Smoking marijuana (in a state where it is illegal)</div>
+    <div class="draggable" draggable="true" tabindex="0" ondragstart="drag(event)" id="item5">Lying to a friend</div>
+    <div class="draggable" draggable="true" tabindex="0" ondragstart="drag(event)" id="item6">Insider trading</div>
   </div>
 
   <button id="submitBtn" onclick="showFeedback()">Submit</button>
@@ -92,22 +108,44 @@
   <div id="feedback"></div>
 
   <script>
+    let selected = null;
+
     function allowDrop(ev) {
       ev.preventDefault();
     }
 
     function drag(ev) {
       ev.dataTransfer.setData("text", ev.target.id);
+      selected = ev.target;
     }
 
     function drop(ev) {
       ev.preventDefault();
-      const data = ev.dataTransfer.getData("text");
+      const data = ev.dataTransfer.getData("text") || selected?.id;
       const dragged = document.getElementById(data);
       if (ev.target.classList.contains("dropzone")) {
         ev.target.appendChild(dragged);
       }
     }
+
+    document.querySelectorAll(".draggable").forEach(el => {
+      el.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          selected = el;
+        }
+      });
+    });
+
+    document.querySelectorAll(".dropzone").forEach(zone => {
+      zone.addEventListener("keydown", function (e) {
+        if ((e.key === "Enter" || e.key === " ") && selected) {
+          e.preventDefault();
+          zone.appendChild(selected);
+          selected = null;
+        }
+      });
+    });
 
     function showFeedback() {
       const expected = {
@@ -128,34 +166,27 @@
         });
       });
 
-      const totalPlaced = user.deviant.length + user.illegal.length + user.both.length;
       const feedbackEl = document.getElementById("feedback");
-      let feedback = "<h3>Feedback:</h3><ul>";
+      feedbackEl.innerHTML = "";
+      let totalPlaced = 0;
+
+      Object.keys(user).forEach(zone => {
+        totalPlaced += user[zone].length;
+      });
 
       if (totalPlaced === 0) {
-        feedback += "<li>Please drag the items into the categories before submitting.</li>";
+        feedbackEl.innerHTML = '<div class="feedback-box incorrect"><p>Please sort the items before clicking Submit.</p></div>';
       } else {
-        if (!user.deviant.includes("item2")) {
-          feedback += "<li>Does cheating break laws or social norms more strongly? Reflect on how it's viewed legally versus socially.</li>";
-        } else {
-          feedback += "<li>Correct: Cheating on a partner breaks norms but is not illegal.</li>";
-        }
-
-        if (!user.illegal.includes("item3")) {
-          feedback += "<li>Jaywalking is common but still considered a legal violation. Where should that go?</li>";
-        } else {
-          feedback += "<li>Correct: Jaywalking is illegal but often not stigmatized.</li>";
-        }
-
-        if (!user.both.includes("item6")) {
-          feedback += "<li>Think about insider trading—is it just unethical, or also criminal? Where might it belong?</li>";
-        } else {
-          feedback += "<li>Correct: Insider trading is both deviant and illegal.</li>";
-        }
+        Object.keys(expected).forEach(zone => {
+          expected[zone].forEach(id => {
+            if (user[zone].includes(id)) {
+              feedbackEl.innerHTML += `<div class='feedback-box correct'><strong>Correct:</strong> ${document.getElementById(id).textContent} is correctly placed.</div>`;
+            } else if (user.deviant.includes(id) || user.illegal.includes(id) || user.both.includes(id)) {
+              feedbackEl.innerHTML += `<div class='feedback-box incorrect'><strong>Hint:</strong> Consider whether "${document.getElementById(id).textContent}" is breaking a law, a social norm, or both.</div>`;
+            }
+          });
+        });
       }
-
-      feedback += "</ul>";
-      feedbackEl.innerHTML = feedback;
       feedbackEl.style.display = "block";
     }
 
@@ -163,8 +194,9 @@
       const items = document.querySelectorAll(".draggable");
       const startZone = document.getElementById("items");
       items.forEach(item => startZone.appendChild(item));
-      document.getElementById("feedback").style.display = "none";
-      document.getElementById("feedback").innerHTML = "";
+      const feedback = document.getElementById("feedback");
+      feedback.innerHTML = "";
+      feedback.style.display = "none";
     }
   </script>
 </body>
