@@ -10,7 +10,7 @@ Visit activity pages:
 8. [Title](https://jnimanISU.github.io/activities/soctheory.html)
 
 
-Embed with iframe in Canvas: 
+Copy the "embed" code below and replace "URL" with link from above. You may need to adjust the height. In Canvas, go to **Insert > Embed** to paste this code.
 ```
 <iframe width="100%" height="1500"
   src="URL"
