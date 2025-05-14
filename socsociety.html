@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Build a Society Simulator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 20px;
+      padding: 0;
+    }
+    .container {
+      background: white;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+    h1 {
+      text-align: center;
+      color: #00467f;
+    }
+    fieldset {
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 5px;
+    }
+    legend {
+      font-weight: bold;
+      color: #00467f;
+    }
+    button {
+      background: #00467f;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    button:hover {
+      background: #006bb3;
+    }
+    .feedback {
+      margin-top: 20px;
+      background: #e8f4fa;
+      padding: 15px;
+      border-left: 4px solid #00467f;
+      display: none;
+    }
+    .explanation {
+      font-size: 0.9em;
+      color: #555;
+      margin-bottom: 10px;
+    }
+    .slider-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5em;
+    }
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+    input[type="range"] {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Build a Society: Power, Class, and Work Simulator</h1>
+    <form id="simForm">
+      <fieldset>
+        <legend>Round 1: Economic System</legend>
+        <div class="explanation">Where do you want your economy to fall on the spectrum from pure capitalism to state socialism?</div>
+        <div class="slider-wrapper">
+          <div class="slider-labels">
+            <span>Capitalism</span>
+            <span>Market Socialism</span>
+            <span>State Socialism</span>
+          </div>
+          <input type="range" id="economy" name="economy" min="0" max="2" step="1" aria-valuetext="Economic System">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Round 2: Labor Structure</legend>
+        <div class="explanation">Choose the level of labor protections and market regulations.</div>
+        <div class="slider-wrapper">
+          <div class="slider-labels">
+            <span>Strong Unions</span>
+            <span>Minimum Wage</span>
+            <span>Deregulated</span>
+          </div>
+          <input type="range" id="labor" name="labor" min="0" max="2" step="1" aria-valuetext="Labor Structure">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Round 3: Political Power</legend>
+        <div class="explanation">Set the degree of public participation in government.</div>
+        <div class="slider-wrapper">
+          <div class="slider-labels">
+            <span>Democracy</span>
+            <span>Oligarchy</span>
+            <span>Authoritarian</span>
+          </div>
+          <input type="range" id="politics" name="politics" min="0" max="2" step="1" aria-valuetext="Political System">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Round 4: Stratification Policies</legend>
+        <div class="explanation">Determine how resources are distributed across social classes.</div>
+        <div class="slider-wrapper">
+          <div class="slider-labels">
+            <span>Redistribution</span>
+            <span>Middle Class Support</span>
+            <span>Elite Accumulation</span>
+          </div>
+          <input type="range" id="stratification" name="stratification" min="0" max="2" step="1" aria-valuetext="Stratification Policy">
+        </div>
+      </fieldset>
+
+      <button type="submit">Submit Choices</button>
+      <button type="reset" id="resetBtn">Reset</button>
+    </form>
+
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+  <script>
+    const economyMap = ['capitalism', 'market', 'state'];
+    const laborMap = ['unions', 'minwage', 'none'];
+    const politicsMap = ['democracy', 'oligarchy', 'authoritarian'];
+    const stratMap = ['redistribute', 'middle', 'elite'];
+
+    document.getElementById('simForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const economy = economyMap[document.getElementById('economy').value];
+      const labor = laborMap[document.getElementById('labor').value];
+      const politics = politicsMap[document.getElementById('politics').value];
+      const strat = stratMap[document.getElementById('stratification').value];
+
+      let feedback = '<h3>Simulation Feedback</h3>';
+      feedback += '<ul>';
+
+      if (economy === 'capitalism') {
+        feedback += '<li><strong>Economy:</strong> Capitalism fosters competition but can increase inequality (Conflict Theory).</li>';
+      } else if (economy === 'market') {
+        feedback += '<li><strong>Economy:</strong> Market socialism balances profit and welfare (Structural Functionalism).</li>';
+      } else {
+        feedback += '<li><strong>Economy:</strong> State socialism aims for equality but may limit individual incentives.</li>';
+      }
+
+      if (labor === 'unions') {
+        feedback += '<li><strong>Labor:</strong> Strong unions promote worker solidarity and may reduce class conflict.</li>';
+      } else if (labor === 'minwage') {
+        feedback += '<li><strong>Labor:</strong> Raising the minimum wage helps reduce poverty but may impact hiring.</li>';
+      } else {
+        feedback += '<li><strong>Labor:</strong> Deregulated labor may increase flexibility but also lead to exploitation.</li>';
+      }
+
+      if (politics === 'democracy') {
+        feedback += '<li><strong>Politics:</strong> Democratic systems often reflect symbolic interactionism through civic participation.</li>';
+      } else if (politics === 'oligarchy') {
+        feedback += '<li><strong>Politics:</strong> Oligarchies centralize power in a few hands, supporting elite dominance theories.</li>';
+      } else {
+        feedback += '<li><strong>Politics:</strong> Authoritarianism limits dissent and democratic checks.</li>';
+      }
+
+      if (strat === 'redistribute') {
+        feedback += '<li><strong>Stratification:</strong> Redistribution and public investment align with conflict theory and equity goals.</li>';
+      } else if (strat === 'middle') {
+        feedback += '<li><strong>Stratification:</strong> Support for mobility strengthens meritocratic ideals.</li>';
+      } else {
+        feedback += '<li><strong>Stratification:</strong> Elite-focused policies often reproduce class divisions (Marxist critique).</li>';
+      }
+
+      feedback += '</ul>';
+      const output = document.getElementById('feedback');
+      output.innerHTML = feedback;
+      output.style.display = 'block';
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', function() {
+      document.getElementById('feedback').innerHTML = '';
+      document.getElementById('feedback').style.display = 'none';
+    });
+  </script>
+</body>
+</html>
