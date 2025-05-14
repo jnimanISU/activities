@@ -87,10 +87,7 @@
   </div>
 
   <button id="submitBtn" onclick="showFeedback()">Submit</button>
-  <div id="feedback">
-    <strong>Reflection:</strong>
-    <p>Great work! Sociologists emphasize that deviance is not always about legality—some acts violate norms but not laws, and some laws are broken without much stigma. Your classifications show how deviance is relative to social context.</p>
-  </div>
+  <div id="feedback"></div>
 
   <script>
     function allowDrop(ev) {
@@ -103,14 +100,56 @@
 
     function drop(ev) {
       ev.preventDefault();
-      var data = ev.dataTransfer.getData("text");
-      var dragged = document.getElementById(data);
-      if (!ev.target.classList.contains("dropzone")) return;
-      ev.target.appendChild(dragged);
+      const data = ev.dataTransfer.getData("text");
+      const dragged = document.getElementById(data);
+      if (ev.target.classList.contains("dropzone")) {
+        ev.target.appendChild(dragged);
+      }
     }
 
     function showFeedback() {
-      document.getElementById("feedback").style.display = "block";
+      const expected = {
+        deviant: ["item2", "item5"],
+        illegal: ["item3"],
+        both: ["item1", "item4", "item6"]
+      };
+
+      const user = {
+        deviant: [],
+        illegal: [],
+        both: []
+      };
+
+      ["deviant", "illegal", "both"].forEach(zone => {
+        document.querySelectorAll(`#${zone} .draggable`).forEach(el => {
+          user[zone].push(el.id);
+        });
+      });
+
+      const totalPlaced = user.deviant.length + user.illegal.length + user.both.length;
+      const feedbackEl = document.getElementById("feedback");
+      let feedback = "<h3>Feedback:</h3><ul>";
+
+      if (totalPlaced === 0) {
+        feedback += "<li>Please drag the items into the categories before submitting.</li>";
+      } else {
+        if (!user.deviant.includes("item2")) {
+          feedback += "<li>Cheating on a partner isn't illegal, but it breaks relationship norms—it's deviant.</li>";
+        }
+        if (!user.illegal.includes("item3")) {
+          feedback += "<li>Jaywalking is technically illegal, even if not seen as deviant by most.</li>";
+        }
+        if (!user.both.includes("item6")) {
+          feedback += "<li>Insider trading is both illegal and widely condemned—try placing it under 'Both'.</li>";
+        }
+        if (feedback === "<h3>Feedback:</h3><ul>") {
+          feedback += "<li>Nice job! Your choices reflect an understanding of how social norms and laws interact.</li>";
+        }
+      }
+
+      feedback += "</ul>";
+      feedbackEl.innerHTML = feedback;
+      feedbackEl.style.display = "block";
     }
   </script>
 </body>
