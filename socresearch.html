@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Build-a-Study Simulator</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      line-height: 1.6;
+      padding: 1rem;
+      max-width: 800px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin: 1rem 0 0.25rem;
+      font-weight: bold;
+    }
+    select, button {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+    .feedback {
+      padding: 1rem;
+      border-radius: 6px;
+      margin-top: 1rem;
+      border: 2px solid #003366;
+      background-color: #e6f0ff;
+    }
+    .hidden {
+      display: none;
+    }
+    h1 {
+      color: #003366;
+    }
+  </style>
+</head>
+<body>
+  <h1>Build-a-Study: Sociological Research Design</h1>
+
+  <form id="studyForm">
+    <label for="topic">Choose a Topic</label>
+    <select id="topic" required>
+      <option value="">-- Select a Topic --</option>
+      <option value="education">Education Inequality</option>
+      <option value="health">Access to Healthcare</option>
+      <option value="media">Social Media Impact</option>
+    </select>
+
+    <label for="method">Choose a Method</label>
+    <select id="method" required>
+      <option value="">-- Select a Method --</option>
+      <option value="survey">Survey</option>
+      <option value="field">Field Observation</option>
+      <option value="experiment">Experiment</option>
+      <option value="secondary">Secondary Data Analysis</option>
+    </select>
+
+    <label for="ethics">Ethical Concern</label>
+    <select id="ethics" required>
+      <option value="">-- Select a Concern --</option>
+      <option value="consent">Informed Consent</option>
+      <option value="privacy">Participant Privacy</option>
+      <option value="bias">Researcher Bias</option>
+    </select>
+
+    <button type="submit">Submit Study Design</button>
+  </form>
+
+  <div id="feedback" class="feedback hidden" role="region" aria-live="polite"></div>
+
+  <script>
+    const form = document.getElementById('studyForm');
+    const feedback = document.getElementById('feedback');
+
+    const feedbackMessages = {
+      education: {
+        survey: "Surveys help you gather student data efficiently. Be mindful of question clarity to ensure valid results.",
+        field: "Field observation in classrooms can reveal unspoken social norms—but remember consent and IRB approval.",
+        experiment: "Classroom experiments can show cause/effect, but ethical concerns around students are high.",
+        secondary: "Using DOE or census data is cost-efficient but limits control over how data was collected."
+      },
+      health: {
+        survey: "Surveys offer wide reach for healthcare opinions, but self-reporting can reduce accuracy.",
+        field: "Observing clinic interactions helps see power dynamics, but privacy is a major concern.",
+        experiment: "Health experiments offer insights but require strict safety protocols and IRB oversight.",
+        secondary: "Hospital data can show trends, but often lacks qualitative context."
+      },
+      media: {
+        survey: "Surveys capture user behavior trends, but must be carefully designed to avoid bias.",
+        field: "Observing online communities gives context, but ethical risks arise from covert observation.",
+        experiment: "Lab experiments isolate variables well—such as time spent on platforms—but may lack real-world generalizability.",
+        secondary: "Analyzing usage stats from platforms is convenient but proprietary limits may exist."
+      },
+      ethics: {
+        consent: "Informed consent ensures participants know risks and procedures. It's a cornerstone of ethical research.",
+        privacy: "Respecting privacy, especially for vulnerable groups, builds trust and meets legal requirements.",
+        bias: "Being reflexive about personal bias ensures your interpretation remains valid and credible."
+      }
+    };
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const topic = document.getElementById('topic').value;
+      const method = document.getElementById('method').value;
+      const ethics = document.getElementById('ethics').value;
+
+      if (!topic || !method || !ethics) return;
+
+      feedback.classList.remove('hidden');
+      feedback.innerHTML = `<strong>Study Topic:</strong> ${topic.replace(/\b\w/g, l => l.toUpperCase())}<br>
+        <strong>Method:</strong> ${method.charAt(0).toUpperCase() + method.slice(1)}<br>
+        <strong>Ethical Focus:</strong> ${ethics.charAt(0).toUpperCase() + ethics.slice(1)}<br><br>
+        ${feedbackMessages[topic][method]}<br><br>
+        <em>${feedbackMessages.ethics[ethics]}</em>`;
+    });
+  </script>
+</body>
+</html>
