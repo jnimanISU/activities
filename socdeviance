@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deviant or Illegal? Drag-and-Drop Activity</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f4f8fb;
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      color: #003366;
+    }
+    .container {
+      display: flex;
+      gap: 40px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .dropzone {
+      flex: 1;
+      min-width: 250px;
+      border: 2px dashed #003366;
+      border-radius: 10px;
+      padding: 20px;
+      background-color: #e6f0ff;
+    }
+    .dropzone h2 {
+      text-align: center;
+      font-size: 1.2rem;
+    }
+    .draggable {
+      background: #ffffff;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      cursor: grab;
+    }
+    .dropped {
+      opacity: 0.6;
+    }
+    #submitBtn {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #0057b8;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    #feedback {
+      margin-top: 20px;
+      background: #dff0d8;
+      padding: 15px;
+      border-left: 4px solid #3c763d;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Deviant or Illegal? Drag-and-Drop Activity</h1>
+  <p>Drag each behavior to the correct category. Some may be <strong>deviant but not illegal</strong>, <strong>illegal but not deviant</strong>, or <strong>both</strong>.</p>
+
+  <div class="container">
+    <div class="dropzone" ondrop="drop(event)" ondragover="allowDrop(event)" id="deviant">
+      <h2>Deviant, Not Illegal</h2>
+    </div>
+    <div class="dropzone" ondrop="drop(event)" ondragover="allowDrop(event)" id="illegal">
+      <h2>Illegal, Not Deviant</h2>
+    </div>
+    <div class="dropzone" ondrop="drop(event)" ondragover="allowDrop(event)" id="both">
+      <h2>Both Deviant & Illegal</h2>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="draggable" draggable="true" ondragstart="drag(event)" id="item1">Public nudity at a beach</div>
+    <div class="draggable" draggable="true" ondragstart="drag(event)" id="item2">Cheating on a partner</div>
+    <div class="draggable" draggable="true" ondragstart="drag(event)" id="item3">Jaywalking</div>
+    <div class="draggable" draggable="true" ondragstart="drag(event)" id="item4">Smoking marijuana (in a state where it is illegal)</div>
+    <div class="draggable" draggable="true" ondragstart="drag(event)" id="item5">Lying to a friend</div>
+    <div class="draggable" draggable="true" ondragstart="drag(event)" id="item6">Insider trading</div>
+  </div>
+
+  <button id="submitBtn" onclick="showFeedback()">Submit</button>
+  <div id="feedback">
+    <strong>Reflection:</strong>
+    <p>Great work! Sociologists emphasize that deviance is not always about legality—some acts violate norms but not laws, and some laws are broken without much stigma. Your classifications show how deviance is relative to social context.</p>
+  </div>
+
+  <script>
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    function drag(ev) {
+      ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function drop(ev) {
+      ev.preventDefault();
+      var data = ev.dataTransfer.getData("text");
+      var dragged = document.getElementById(data);
+      if (!ev.target.classList.contains("dropzone")) return;
+      ev.target.appendChild(dragged);
+    }
+
+    function showFeedback() {
+      document.getElementById("feedback").style.display = "block";
+    }
+  </script>
+</body>
+</html>
