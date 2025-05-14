@@ -5,7 +5,7 @@ Visit activity pages:
 3. [Practice: Culture Concepts in Sociology](https://jnimanISU.github.io/activities/socculture.html)
 4. [Social Identity Map](https://jnimanISU.github.io/activities/socidentity.html)
 5. [Deviant or Illegal?](https://jnimanISU.github.io/activities/socdeviance.html)
-6. [Title](https://jnimanISU.github.io/activities/soctheory.html)
+6. [Society Simulator](https://jnimanISU.github.io/activities/socsociety.html)
 7. [Title](https://jnimanISU.github.io/activities/soctheory.html)
 8. [Title](https://jnimanISU.github.io/activities/soctheory.html)
 9. [Title](https://jnimanISU.github.io/activities/soctheory.html)
