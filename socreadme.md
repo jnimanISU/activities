@@ -10,7 +10,7 @@ Visit activity pages:
 8. [Title](https://jnimanISU.github.io/activities/soctheory.html)
 
 
-Embed with iframe in Canvas: <iframe width="100%" height="1500"
+Embed with iframe in Canvas: //<iframe width="100%" height="1500"
   src="URL"
   style="border: none;" frameborder="0">
 </iframe>
