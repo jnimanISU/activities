@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Course Alignment Activity: Cooking 101</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
@@ -67,9 +68,9 @@
 <h4>Available Module-Level Objectives (MLOs)</h4>
 <div class="container">
   <div class="column" id="mloStart">
-    <div class="item" tabindex="0" id="mlo1" draggable="true" role="option">MLO1: Identify basic kitchen tools</div>
-    <div class="item" tabindex="0" id="mlo2" draggable="true" role="option">MLO2: Apply safe food handling practice</div>
-    <div class="item" tabindex="0" id="mlo3" draggable="true" role="option">MLO3: Prepare a balanced breakfast</div>
+    <div class="item" tabindex="0" id="mlo1" draggable="true">MLO1: Identify basic kitchen tools</div>
+    <div class="item" tabindex="0" id="mlo2" draggable="true">MLO2: Apply safe food handling practice</div>
+    <div class="item" tabindex="0" id="mlo3" draggable="true">MLO3: Prepare a balanced breakfast</div>
   </div>
 </div>
 
@@ -92,12 +93,12 @@
 <h4>Available Assessments and Learning Activities</h4>
 <div class="container">
   <div class="column" id="assessmentStart">
-    <div class="item" tabindex="0" id="a1" draggable="true" role="option">Assessment: Label parts of a kitchen diagram</div>
-    <div class="item" tabindex="0" id="a2" draggable="true" role="option">Assessment: Complete a safety checklist</div>
-    <div class="item" tabindex="0" id="a3" draggable="true" role="option">Assessment: Submit video process of breakfast plate</div>
-    <div class="item" tabindex="0" id="la1" draggable="true" role="option">Learning Activity: Practice quiz on kitchen tools</div>
-    <div class="item" tabindex="0" id="la2" draggable="true" role="option">Learning Activity: Safety role-play</div>
-    <div class="item" tabindex="0" id="la3" draggable="true" role="option">Learning Activity: Compare nutrition options</div>
+    <div class="item" tabindex="0" id="a1" draggable="true">Assessment: Label parts of a kitchen diagram</div>
+    <div class="item" tabindex="0" id="a2" draggable="true">Assessment: Complete a safety checklist</div>
+    <div class="item" tabindex="0" id="a3" draggable="true">Assessment: Submit video process of breakfast plate</div>
+    <div class="item" tabindex="0" id="la1" draggable="true">Learning Activity: Practice quiz on kitchen tools</div>
+    <div class="item" tabindex="0" id="la2" draggable="true">Learning Activity: Safety role-play</div>
+    <div class="item" tabindex="0" id="la3" draggable="true">Learning Activity: Compare nutrition options</div>
   </div>
 </div>
 
@@ -109,7 +110,6 @@
 <script>
 let draggedItem = null;
 
-// Enable mouse drag/drop
 const items = document.querySelectorAll('.item');
 items.forEach(item => {
   item.addEventListener('dragstart', e => {
