@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Course Alignment Activity: Cooking 101</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h3, h4 { margin-top: 30px; }
+    .container { display: flex; flex-wrap: wrap; gap: 20px; }
+    .column {
+      flex: 1;
+      min-width: 200px;
+      padding: 10px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+    .column h4 { text-align: center; }
+    .item {
+      padding: 8px;
+      margin: 5px 0;
+      background-color: #e0f7fa;
+      border: 1px solid #00796b;
+      border-radius: 4px;
+      cursor: grab;
+    }
+    .dropzone {
+      min-height: 100px;
+      padding: 10px;
+      margin-top: 10px;
+      border: 2px dashed #aaa;
+      border-radius: 6px;
+      background-color: #fff;
+    }
+    .correct { background-color: #d0f0c0; border-color: #388e3c; }
+    .incorrect { background-color: #ffcdd2; border-color: #d32f2f; }
+    button { margin-top: 20px; padding: 10px 15px; font-size: 16px; }
+    .hint { font-style: italic; color: #333; margin-top: 10px; white-space: pre-line; }
+    .item:focus-visible, .dropzone:focus-visible { outline: 3px solid #007bff; }
+    .item.dragging { background-color: #ffeb3b; }
+    .visually-hidden {
+      position: absolute;
+      left: -10000px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+<h3>📚 Course Alignment Activity: Cooking 101</h3>
+<p><em>Tab to a learning item and press Enter or Space to select it, then tab to a drop zone and press Enter or Space to place it.</em></p>
+
+<h4>Step 1: Match Module-Level Objectives (MLOs) to Course-Level Objectives (CLOs)</h4>
+<div class="container">
+  <div class="column">
+    <h4 id="clo1-label">CLO1: Demonstrate kitchen safety and tool usage</h4>
+    <div class="dropzone" id="clo1" role="group" aria-labelledby="clo1-label" tabindex="0"></div>
+  </div>
+  <div class="column">
+    <h4 id="clo2-label">CLO2: Apply basic cooking techniques to prepare meals</h4>
+    <div class="dropzone" id="clo2" role="group" aria-labelledby="clo2-label" tabindex="0"></div>
+  </div>
+</div>
+
+<h4>Available Module-Level Objectives (MLOs)</h4>
+<div class="container">
+  <div class="column" id="mloStart">
+    <div class="item" tabindex="0" id="mlo1" draggable="true" role="option">MLO1: Identify basic kitchen tools</div>
+    <div class="item" tabindex="0" id="mlo2" draggable="true" role="option">MLO2: Apply safe food handling practice</div>
+    <div class="item" tabindex="0" id="mlo3" draggable="true" role="option">MLO3: Prepare a balanced breakfast</div>
+  </div>
+</div>
+
+<h4>Step 2: Match Assessments and Learning Activities to MLOs</h4>
+<div class="container">
+  <div class="column">
+    <h4 id="mloDrop1-label">MLO1: Identify basic kitchen tools</h4>
+    <div class="dropzone" id="mloDrop1" role="group" aria-labelledby="mloDrop1-label" tabindex="0"></div>
+  </div>
+  <div class="column">
+    <h4 id="mloDrop2-label">MLO2: Apply safe food handling practice</h4>
+    <div class="dropzone" id="mloDrop2" role="group" aria-labelledby="mloDrop2-label" tabindex="0"></div>
+  </div>
+  <div class="column">
+    <h4 id="mloDrop3-label">MLO3: Prepare a balanced breakfast</h4>
+    <div class="dropzone" id="mloDrop3" role="group" aria-labelledby="mloDrop3-label" tabindex="0"></div>
+  </div>
+</div>
+
+<h4>Available Assessments and Learning Activities</h4>
+<div class="container">
+  <div class="column" id="assessmentStart">
+    <div class="item" tabindex="0" id="a1" draggable="true" role="option">Assessment: Label parts of a kitchen diagram</div>
+    <div class="item" tabindex="0" id="a2" draggable="true" role="option">Assessment: Complete a safety checklist</div>
+    <div class="item" tabindex="0" id="a3" draggable="true" role="option">Assessment: Submit video process of breakfast plate</div>
+    <div class="item" tabindex="0" id="la1" draggable="true" role="option">Learning Activity: Practice quiz on kitchen tools</div>
+    <div class="item" tabindex="0" id="la2" draggable="true" role="option">Learning Activity: Safety role-play</div>
+    <div class="item" tabindex="0" id="la3" draggable="true" role="option">Learning Activity: Compare nutrition options</div>
+  </div>
+</div>
+
+<button onclick="checkAnswers()">Check Answers</button>
+<button onclick="resetActivity()">Reset</button>
+<div id="feedback" aria-live="polite" style="margin-top:20px;font-weight:bold;"></div>
+<div id="hints" class="hint"></div>
+
+<script>
+let draggedItem = null;
+
+// Enable mouse drag/drop
+const items = document.querySelectorAll('.item');
+items.forEach(item => {
+  item.addEventListener('dragstart', e => {
+    e.dataTransfer.setData('text/plain', item.id);
+    draggedItem = item;
+  });
+
+  item.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      draggedItem = item;
+      item.classList.add('dragging');
+      e.preventDefault();
+    }
+  });
+});
+
+const dropzones = document.querySelectorAll('.dropzone');
+dropzones.forEach(zone => {
+  zone.addEventListener('dragover', e => e.preventDefault());
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    const id = e.dataTransfer.getData('text/plain');
+    const dragged = document.getElementById(id);
+    if (dragged) zone.appendChild(dragged);
+  });
+  zone.addEventListener('keydown', e => {
+    if ((e.key === 'Enter' || e.key === ' ') && draggedItem) {
+      e.preventDefault();
+      zone.appendChild(draggedItem);
+      draggedItem.classList.remove('dragging');
+      draggedItem = null;
+    }
+  });
+});
+
+function checkAnswers() {
+  const correctMappings = {
+    clo1: ['mlo1', 'mlo2'],
+    clo2: ['mlo3'],
+    mloDrop1: ['a1', 'la1'],
+    mloDrop2: ['a2', 'la2'],
+    mloDrop3: ['a3', 'la3']
+  };
+  const hints = {
+    clo1: 'Think about which MLOs focus on kitchen tools and safety practices.',
+    clo2: 'Which MLO involves preparing a full meal?',
+    mloDrop1: 'What activities help learners recognize and label kitchen tools?',
+    mloDrop2: 'What helps learners practice kitchen safety habits?',
+    mloDrop3: 'Which tasks ask learners to demonstrate cooking a meal?'
+  };
+  let allCorrect = true;
+  let hintText = '';
+
+  Object.entries(correctMappings).forEach(([zoneId, correctIds]) => {
+    const zone = document.getElementById(zoneId);
+    const dropped = Array.from(zone.children).map(el => el.id);
+    const isCorrect = correctIds.every(id => dropped.includes(id)) && dropped.every(id => correctIds.includes(id));
+
+    zone.classList.remove('correct', 'incorrect');
+    zone.classList.add(isCorrect ? 'correct' : 'incorrect');
+
+    if (!isCorrect) {
+      allCorrect = false;
+      hintText += `• ${hints[zoneId]}\n`;
+    }
+  });
+
+  document.getElementById('feedback').textContent = allCorrect
+    ? '✅ Great job! Everything is correctly aligned.'
+    : '❌ Some items are not correctly placed. Review the suggestions below and try again:';
+  document.getElementById('hints').textContent = allCorrect ? '' : hintText;
+}
+
+function resetActivity() {
+  ['mlo1', 'mlo2', 'mlo3'].forEach(id => document.getElementById('mloStart').appendChild(document.getElementById(id)));
+  ['a1', 'a2', 'a3', 'la1', 'la2', 'la3'].forEach(id => document.getElementById('assessmentStart').appendChild(document.getElementById(id)));
+  document.querySelectorAll('.dropzone').forEach(dz => dz.classList.remove('correct', 'incorrect'));
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('hints').textContent = '';
+}
+</script>
+</body>
+</html>
