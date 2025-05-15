@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Course Alignment Map</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h3, h4 { margin-top: 30px; }
+    .container { display: flex; flex-wrap: wrap; gap: 20px; }
+    .column {
+      flex: 1;
+      min-width: 200px;
+      padding: 10px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+    .column h4 { text-align: center; }
+    .item {
+      padding: 8px;
+      margin: 5px 0;
+      background-color: #e0f7fa;
+      border: 1px solid #00796b;
+      border-radius: 4px;
+      cursor: grab;
+    }
+    .dropzone {
+      min-height: 100px;
+      padding: 10px;
+      margin-top: 10px;
+      border: 2px dashed #aaa;
+      border-radius: 6px;
+      background-color: #fff;
+    }
+    .correct { background-color: #d0f0c0; border-color: #388e3c; }
+    .incorrect { background-color: #ffcdd2; border-color: #d32f2f; }
+    button { margin-top: 20px; padding: 10px 15px; font-size: 16px; }
+    .hint { font-style: italic; color: #333; margin-top: 10px; white-space: pre-line; }
+    .item:focus-visible, .dropzone:focus-visible { outline: 3px solid #007bff; }
+    .item.dragging { background-color: #ffeb3b; }
+  </style>
+</head>
+<body>
+<h3>📚 Course Alignment Activity: Cooking 101</h3>
+<p><em>Tab to a learning item and press Enter or Space to select it, then tab to a drop zone and press Enter or Space to place it.</em></p>
+
+<h4>Step 1: Match Module-Level Objectives (MLOs) to Course-Level Objectives (CLOs)</h4>
+<div class="container">
+  <div class="column">
+    <h4>CLO1: Demonstrate kitchen safety and tool usage</h4>
+    <div class="dropzone" id="clo1" tabindex="0"></div>
+  </div>
+  <div class="column">
+    <h4>CLO2: Apply basic cooking techniques to prepare meals</h4>
+    <div class="dropzone" id="clo2" tabindex="0"></div>
+  </div>
+</div>
+
+<h4>Available Module-Level Objectives (MLOs)</h4>
+<div class="container">
+  <div class="column" id="mloStart">
+    <div class="item" tabindex="0" id="mlo1" draggable="true">MLO1: Identify basic kitchen tools</div>
+    <div class="item" tabindex="0" id="mlo2" draggable="true">MLO2: Apply safe food handling practice</div>
+    <div class="item" tabindex="0" id="mlo3" draggable="true">MLO3: Prepare a balanced breakfast</div>
+  </div>
+</div>
+
+<h4>Step 2: Match Assessments and Learning Activities to MLOs</h4>
+<div class="container">
+  <div class="column">
+    <h4>MLO1: Identify basic kitchen tools</h4>
+    <div class="dropzone" id="mloDrop1" tabindex="0"></div>
+  </div>
+  <div class="column">
+    <h4>MLO2: Apply safe food handling practice</h4>
+    <div class="dropzone" id="mloDrop2" tabindex="0"></div>
+  </div>
+  <div class="column">
+    <h4>MLO3: Prepare a balanced breakfast</h4>
+    <div class="dropzone" id="mloDrop3" tabindex="0"></div>
+  </div>
+</div>
+
+<h4>Available Assessments and Learning Activities</h4>
+<div class="container">
+  <div class="column" id="assessmentStart">
+    <div class="item" tabindex="0" id="a1" draggable="true">Assessment: Label parts of a kitchen diagram</div>
+    <div class="item" tabindex="0" id="a2" draggable="true">Assessment: Complete a safety checklist</div>
+    <div class="item" tabindex="0" id="a3" draggable="true">Assessment: Submit video process of breakfast plate</div>
+    <div class="item" tabindex="0" id="la1" draggable="true">Learning Activity: Practice quiz on kitchen tools</div>
+    <div class="item" tabindex="0" id="la2" draggable="true">Learning Activity: Safety role-play</div>
+    <div class="item" tabindex="0" id="la3" draggable="true">Learning Activity: Compare nutrition options</div>
+  </div>
+</div>
+
+<button onclick="checkAnswers()">Check Answers</button>
+<button onclick="resetActivity()">Reset</button>
+<button onclick="submitScormScore()">Submit Assignment</button>
+<div id="feedback" aria-live="polite" style="margin-top:20px;font-weight:bold;"></div>
+<div id="hints" class="hint"></div>
+</body>
+</html>
