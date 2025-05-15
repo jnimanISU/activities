@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cooking 101: Identify Kitchen Tools</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #f8f8f8;
+    }
+    .activity-container {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      background-image: url("kitchen_tools_background.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      height: 700px;
+    }
+    .hotspot {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: #007ACC;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 30px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .popup-form {
+      display: none;
+      position: absolute;
+      background: white;
+      border: 2px solid #007ACC;
+      padding: 10px;
+      z-index: 10;
+      max-width: 250px;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    }
+    .popup-form select, .popup-form input {
+      width: 100%;
+      padding: 5px;
+      margin-top: 5px;
+    }
+    .popup-form button {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h3 style="text-align:center;">Cooking 101: Identify Basic Kitchen Tools</h3>
+  <div class="activity-container">
+    <div class="hotspot" style="top: 10%; left: 60%;" onclick="showForm('form1')">+</div>
+    <div class="hotspot" style="top: 40%; left: 20%;" onclick="showForm('form2')">+</div>
+    <div class="hotspot" style="top: 55%; left: 50%;" onclick="showForm('form3')">+</div>
+    <div class="hotspot" style="top: 60%; left: 75%;" onclick="showForm('form4')">+</div>
+
+    <div class="popup-form" id="form1" style="top: 12%; left: 63%;">
+      <label>Identify this kitchen tool:</label>
+      <select>
+        <option value="">--Select--</option>
+        <option>Chef's Knife</option>
+        <option>Spatula</option>
+        <option>Wooden Spoon</option>
+        <option>Tongs</option>
+        <option>Measuring Cup</option>
+      </select>
+      <button onclick="hideForms()">Close</button>
+    </div>
+
+    <div class="popup-form" id="form2" style="top: 42%; left: 23%;">
+      <label>Identify this kitchen tool:</label>
+      <input type="text" placeholder="Type your answer here">
+      <button onclick="hideForms()">Close</button>
+    </div>
+
+    <div class="popup-form" id="form3" style="top: 57%; left: 53%;">
+      <label>Identify this kitchen tool:</label>
+      <select>
+        <option value="">--Select--</option>
+        <option>Chef's Knife</option>
+        <option>Spatula</option>
+        <option>Wooden Spoon</option>
+        <option>Tongs</option>
+        <option>Measuring Cup</option>
+      </select>
+      <button onclick="hideForms()">Close</button>
+    </div>
+
+    <div class="popup-form" id="form4" style="top: 62%; left: 78%;">
+      <label>Identify this kitchen tool:</label>
+      <input type="text" placeholder="Type your answer here">
+      <button onclick="hideForms()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    function showForm(id) {
+      hideForms();
+      document.getElementById(id).style.display = "block";
+    }
+    function hideForms() {
+      const forms = document.querySelectorAll(".popup-form");
+      forms.forEach(f => f.style.display = "none");
+    }
+    document.body.addEventListener("click", function(e) {
+      if (!e.target.closest('.popup-form') && !e.target.classList.contains('hotspot')) {
+        hideForms();
+      }
+    });
+  </script>
+</body>
+</html>
