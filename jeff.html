@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 3.1: Cloud Security Fundamentals</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        :root {
+            --color-primary: #005F73;
+            --color-secondary: #0A9396;
+            --color-tertiary: #94D2BD;
+            --color-accent-1: #EE9B00;
+            --color-accent-2: #CA6702;
+            --color-accent-3: #BB3E03;
+            --color-accent-4: #AE2012;
+            --color-text: #333;
+            --color-bg-light: #f8f9fa;
+            --color-provider: #94D2BD;
+            --color-customer: #0A9396;
+        }
+        .service-stack {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .stack-layer {
+            padding: 0.75rem 1rem;
+            text-align: center;
+            font-weight: 600;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .stack-layer:last-child {
+            border-bottom: none;
+        }
+        .managed-by-provider {
+            background-color: var(--color-provider);
+            color: #000;
+        }
+        .managed-by-customer {
+            background-color: var(--color-customer);
+            color: #fff;
+        }
+    </style>
+</head>
+<body class="bg-[var(--color-bg-light)] text-[var(--color-text)]">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-[var(--color-primary)] mb-4">☁️ Module 3.1: Cloud Security Fundamentals</h1>
+            <p class="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">An infographic on the principles, challenges, and strategies for protecting data and ensuring privacy in the cloud.</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+            <section class="md:col-span-2 bg-white rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-[var(--color-primary)] mb-4">What Are the Core Cloud Models?</h2>
+                <p class="text-base text-gray-700 mb-6">Cloud security changes based on the service model. The primary models—IaaS, PaaS, and SaaS—dictate different levels of customer responsibility. This diagram shows who manages each layer of the technology stack.</p>
+                <div class="flex flex-col md:flex-row justify-around mt-4 space-y-6 md:space-y-0 md:space-x-6">
+                    
+                    <div class="flex-1 flex flex-col">
+                        <h3 class="text-2xl font-semibold text-center mb-3 text-[var(--color-secondary)]">IaaS</h3>
+                        <div class="service-stack flex-1">
+                            <div class="stack-layer managed-by-customer">Applications</div>
+                            <div class="stack-layer managed-by-customer">Data</div>
+                            <div class="stack-layer managed-by-customer">Runtime</div>
+                            <div class="stack-layer managed-by-customer">Middleware</div>
+                            <div class="stack-layer managed-by-customer">O/S</div>
+                            <div class="stack-layer managed-by-provider">Virtualization</div>
+                            <div class="stack-layer managed-by-provider">Servers</div>
+                            <div class="stack-layer managed-by-provider">Storage</div>
+                            <div class="stack-layer managed-by-provider">Networking</div>
+                        </div>
+                        <p class="text-center text-sm mt-2 p-2 bg-gray-100 rounded"><strong>You Manage:</strong> OS, Data, Apps</p>
+                    </div>
+
+                    <div class="flex-1 flex flex-col">
+                        <h3 class="text-2xl font-semibold text-center mb-3 text-[var(--color-secondary)]">PaaS</h3>
+                        <div class="service-stack flex-1">
+                            <div class="stack-layer managed-by-customer">Applications</div>
+                            <div class="stack-layer managed-by-customer">Data</div>
+                            <div class="stack-layer managed-by-provider">Runtime</div>
+                            <div class="stack-layer managed-by-provider">Middleware</div>
+                            <div class="stack-layer managed-by-provider">O/S</div>
+                            <div class="stack-layer managed-by-provider">Virtualization</div>
+                            <div class="stack-layer managed-by-provider">Servers</div>
+                            <div class="stack-layer managed-by-provider">Storage</div>
+                            <div class="stack-layer managed-by-provider">Networking</div>
+                        </div>
+                         <p class="text-center text-sm mt-2 p-2 bg-gray-100 rounded"><strong>You Manage:</strong> Apps & Data</p>
+                    </div>
+
+                    <div class="flex-1 flex flex-col">
+                        <h3 class="text-2xl font-semibold text-center mb-3 text-[var(--color-secondary)]">SaaS</h3>
+                        <div class="service-stack flex-1">
+                            <div class="stack-layer managed-by-provider">Applications</div>
+                            <div class="stack-layer managed-by-provider">Data</div>
+                            <div class="stack-layer managed-by-provider">Runtime</div>
+                            <div class="stack-layer managed-by-provider">Middleware</div>
+                            <div class="stack-layer managed-by-provider">O/S</div>
+                            <div class="stack-layer managed-by-provider">Virtualization</div>
+                            <div class="stack-layer managed-by-provider">Servers</div>
+                            <div class="stack-layer managed-by-provider">Storage</div>
+                            <div class="stack-layer managed-by-provider">Networking</div>
+                        </div>
+                         <p class="text-center text-sm mt-2 p-2 bg-gray-100 rounded"><strong>You Manage:</strong> User Access</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-[var(--color-primary)] mb-4">The Shared Responsibility Model</h2>
+                <p class="text-base text-gray-700 mb-6">This is the most important concept in cloud security. Security is a partnership. The provider is responsible for securing the cloud itself, while you are responsible for securing what you put *in* the cloud.</p>
+                <div class="flex flex-col sm:flex-row justify-between mt-4 space-y-4 sm:space-y-0 sm:space-x-4">
+                    <div class="flex-1 bg-[var(--color-tertiary)] p-4 rounded-lg">
+                        <h4 class="text-xl font-bold text-black mb-3 text-center">Provider Responsibility</h4>
+                        <ul class="list-disc list-inside space-y-2 text-black">
+                            <li>Physical Data Centers</li>
+                            <li>Hardware & Infrastructure</li>
+                            <li>Virtualization Layer</li>
+                            <li>Network Foundation</li>
+                        </ul>
+                    </div>
+                    <div class="flex-1 bg-[var(--color-secondary)] p-4 rounded-lg text-white">
+                        <h4 class="text-xl font-bold mb-3 text-center">Customer Responsibility</h4>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>Data Encryption</li>
+                            <li>Identity & Access (IAM)</li>
+                            <li>Application Security</li>
+                            <li>Firewall Configuration</li>
+                            <li>Operating System (in IaaS)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-[var(--color-primary)] mb-4">Why Is Cloud Security Different?</h2>
+                <p class="text-base text-gray-700 mb-6">Cloud environments are fundamentally different from traditional on-premise data centers, introducing unique security considerations that must be addressed.</p>
+                <div class="space-y-4 mt-6">
+                    <div class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg">
+                        <span class="text-4xl">⚡️</span>
+                        <div>
+                            <h4 class="text-xl font-semibold text-[var(--color-accent-2)]">Elasticity & Scale</h4>
+                            <p class="text-gray-700">Resources are dynamic. Security controls must be automated and scale instantly with your workloads.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg">
+                        <span class="text-4xl">🌍</span>
+                        <div>
+                            <h4 class="text-xl font-semibold text-[var(--color-accent-2)]">Data Residency & Compliance</h4>
+                            <p class="text-gray-700">You are responsible for knowing where your data lives and ensuring it adheres to global regulations like GDPR or HIPAA.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg">
+                        <span class="text-4xl">🔗</span>
+                        <div>
+                            <h4 class="text-xl font-semibold text-[var(--color-accent-2)]">Hyper-connectivity</h4>
+                            <p class="text-gray-700">Cloud services rely heavily on public APIs. This increases the attack surface if not properly secured and monitored.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="md:col-span-2 bg-white rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-[var(--color-primary)] mb-4">Top Cloud Security Challenges</h2>
+                <p class="text-base text-gray-700 mb-6 max-w-3xl mx-auto text-center">While threats are diverse, a few key areas represent the vast majority of cloud security incidents. This (illustrative) chart shows the most common root causes of data breaches and vulnerabilities in the cloud.</p>
+                <div class="relative w-full max-w-xl mx-auto h-96 max-h-96 md:h-[450px] md:max-h-[450px]">
+                    <canvas id="challengesChart"></canvas>
+                </div>
+            </section>
+
+            <section class="md:col-span-2 bg-white rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-[var(--color-primary)] mb-4">The New Mindset: From Perimeter to Zero Trust</h2>
+                <p class="text-base text-gray-700 mb-6">The complexity of the cloud requires a shift in our security philosophy. The old "castle and moat" model is obsolete. We must move to a **Zero Trust** model, which assumes no user or device is trusted by default.</p>
+                <div class="flex flex-col md:flex-row justify-around mt-4 space-y-6 md:space-y-0 md:space-x-6">
+
+                    <div class="flex-1 border-4 border-[var(--color-accent-4)] border-dashed p-6 rounded-lg text-center">
+                        <h3 class="text-2xl font-bold text-[var(--color-accent-4)] mb-3">Old Model: Perimeter Security</h3>
+                        <p class="text-5xl mb-4">🏰</p>
+                        <p class="text-lg font-semibold">"Trust but verify"</p>
+                        <p class="text-gray-700 mt-2">Relies on a strong outer firewall. Once inside, users and devices are often trusted, allowing threats to move laterally.</p>
+                    </div>
+                    
+                    <div class="flex-1 border-4 border-[var(--color-secondary)] border-solid p-6 rounded-lg text-center">
+                        <h3 class="text-2xl font-bold text-[var(--color-secondary)] mb-3">New Model: Zero Trust</h3>
+                        <p class="text-5xl mb-4">🔐</p>
+                        <p class="text-lg font-semibold">"Never trust, always verify"</p>
+                        <p class="text-gray-700 mt-2">Authenticates and authorizes every single request. Access is granular, time-bound, and strictly enforced, minimizing breach impact.</p>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            function wrapLabels(label, maxWidth) {
+                if (typeof label !== 'string' || label.length <= maxWidth) {
+                    return label;
+                }
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + word).length <= maxWidth) {
+                        currentLine += word + ' ';
+                    } else {
+                        lines.push(currentLine.trim());
+                        currentLine = word + ' ';
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            }
+
+            const rawLabels = [
+                'Misconfigurations', 
+                'Identity & Access Management (IAM)', 
+                'Lack of Visibility (Shadow IT)', 
+                'Data Security & Encryption Failure'
+            ];
+            
+            const wrappedLabels = rawLabels.map(label => wrapLabels(label, 16));
+
+            const ctx = document.getElementById('challengesChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: wrappedLabels,
+                    datasets: [{
+                        label: 'Reported Incidents',
+                        data: [40, 30, 18, 12],
+                        backgroundColor: [
+                            '#EE9B00',
+                            '#CA6702',
+                            '#BB3E03',
+                            '#AE2012'
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 14
+                                },
+                                generateLabels: function(chart) {
+                                    const data = chart.data;
+                                    if (data.labels.length && data.datasets.length) {
+                                        return data.labels.map((label, i) => {
+                                            const meta = chart.getDatasetMeta(0);
+                                            const style = meta.controller.getStyle(i);
+                                            return {
+                                                text: Array.isArray(label) ? label.join(' ') : label,
+                                                fillStyle: style.backgroundColor,
+                                                strokeStyle: style.borderColor,
+                                                lineWidth: style.borderWidth,
+                                                hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
+                                                index: i
+                                            };
+                                        });
+                                    }
+                                    return [];
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    } else {
+                                      return label;
+                                    }
+                                },
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + '%';
+                                    }
+                                    return label;
+                                }
+                            },
+                            bodyFont: {
+                                size: 14
+                            },
+                            titleFont: {
+                                size: 16
+                            },
+                            padding: 12
+                        }
+                    }
+                }
+            });
+
+        });
+    </script>
+
+</body>
+</html>
